@@ -1,0 +1,61 @@
+\section*{Introduction}
+
+GTree is a C library providing structures and functions to manipulate tree structures.\\ 
+
+A GTree is a structure containing a pointer toward its parent, a void* pointer toward user's data and a GSet of subtrees. The GTree offers the same interface has a GSet to manipulate its subtrees. It also provides a function to cut the GTree from its parent.\\
+
+The library provides also three iterators to run through the trees: GTreeIterDepth, GTreeIterBreadth, GTreeIterValue which step, respectively, in depth first order, breadth first order and value (sorting value of the GSet of subtrees) first order.\\
+
+It uses the \begin{ttfamily}PBErr\end{ttfamily} and \begin{ttfamily}GSet\end{ttfamily} libraries.\\
+
+\section{Interface}
+
+\begin{scriptsize}
+\begin{ttfamily}
+\verbatiminput{/home/bayashi/Coding/GTree/gtree.h}
+\end{ttfamily}
+\end{scriptsize}
+
+\section{Code}
+
+\subsection{pbmath.c}
+
+\begin{scriptsize}
+\begin{ttfamily}
+\verbatiminput{/home/bayashi/Coding/GTree/gtree.c}
+\end{ttfamily}
+\end{scriptsize}
+
+\subsection{pbmath-inline.c}
+
+\begin{scriptsize}
+\begin{ttfamily}
+\verbatiminput{/home/bayashi/Coding/GTree/gtree-inline.c}
+\end{ttfamily}
+\end{scriptsize}
+
+\section{Makefile}
+
+\begin{scriptsize}
+\begin{ttfamily}
+\verbatiminput{/home/bayashi/Coding/GTree/Makefile}
+\end{ttfamily}
+\end{scriptsize}
+
+\section{Unit tests}
+
+\begin{scriptsize}
+\begin{ttfamily}
+\verbatiminput{/home/bayashi/Coding/GTree/main.c}
+\end{ttfamily}
+\end{scriptsize}
+
+\section{Unit tests output}
+
+\begin{scriptsize}
+\begin{ttfamily}
+\verbatiminput{/home/bayashi/Coding/GTree/unitTestRef.txt}
+\end{ttfamily}
+\end{scriptsize}
+
+
