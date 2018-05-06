@@ -39,7 +39,7 @@ GTree GTreeCreateStatic(void) {
 }
 
 // Create a new GTree with user data 'data'
-GTree* GTreeCreateData(void* data) {
+GTree* GTreeCreateData(void* const data) {
   // Declare the new tree
   GTree *that = PBErrMalloc(GTreeErr, sizeof(GTree));
   // Set properties
@@ -54,7 +54,7 @@ GTree* GTreeCreateData(void* data) {
 // If 'that' is not a root node it is cut prior to be freed
 // Subtrees are recursively freed
 // User data must be freed by the user
-void GTreeFree(GTree** that) {
+void _GTreeFree(GTree** that) {
   // Check argument
   if (that == NULL || *that == NULL)
     // Nothing to do
@@ -82,7 +82,7 @@ void GTreeFreeRec(GSetGTree* subtrees) {
 // If 'that' is not a root node it is cut prior to be freed
 // Subtrees are recursively freed
 // User data must be freed by the user
-void GTreeFreeStatic(GTree* that) {
+void _GTreeFreeStatic(GTree* that) {
   // Check argument
   if (that == NULL)
     // Nothing to do
@@ -97,7 +97,7 @@ void GTreeFreeStatic(GTree* that) {
 
 // Disconnect the GTree 'that' from its parent
 // If it has no parent, do nothing
-void GTreeCut(GTree* that) {
+void _GTreeCut(GTree* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -117,7 +117,7 @@ void GTreeCut(GTree* that) {
 
 // Return the number of subtrees of the GTree 'that' and their subtrees 
 // recursively
-int GTreeGetSize(GTree* that) {
+int _GTreeGetSize(const GTree* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -160,7 +160,7 @@ void GTreeIterCreateSequenceValueFirst(GSetGTree* seq, GTree* tree,
 // ================ Functions implementation ====================
 
 // Create a new GTreeIterDepth for the GTree 'tree'
-GTreeIterDepth* GTreeIterDepthCreate(GTree* tree) {
+GTreeIterDepth* _GTreeIterDepthCreate(GTree* const tree) {
 #if BUILDMODE == 0
   if (tree == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -180,7 +180,7 @@ GTreeIterDepth* GTreeIterDepthCreate(GTree* tree) {
 }
 
 // Create a new static GTreeIterDepth for the GTree 'tree'
-GTreeIterDepth GTreeIterDepthCreateStatic(GTree* tree) {
+GTreeIterDepth _GTreeIterDepthCreateStatic(GTree* const tree) {
 #if BUILDMODE == 0
   if (tree == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -200,7 +200,7 @@ GTreeIterDepth GTreeIterDepthCreateStatic(GTree* tree) {
 }
 
 // Create a new GTreeIterBreadth for the GTree 'tree'
-GTreeIterBreadth* GTreeIterBreadthCreate(GTree* tree) {
+GTreeIterBreadth* _GTreeIterBreadthCreate(GTree* const tree) {
 #if BUILDMODE == 0
   if (tree == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -221,7 +221,7 @@ GTreeIterBreadth* GTreeIterBreadthCreate(GTree* tree) {
 }
 
 // Create a new static GTreeIterBreadth for the GTree 'tree'
-GTreeIterBreadth GTreeIterBreadthCreateStatic(GTree* tree) {
+GTreeIterBreadth _GTreeIterBreadthCreateStatic(GTree* const tree) {
 #if BUILDMODE == 0
   if (tree == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -241,7 +241,7 @@ GTreeIterBreadth GTreeIterBreadthCreateStatic(GTree* tree) {
 }
 
 // Create a new GTreeIterValue for the GTree 'tree'
-GTreeIterValue* GTreeIterValueCreate(GTree* tree) {
+GTreeIterValue* _GTreeIterValueCreate(GTree* const tree) {
 #if BUILDMODE == 0
   if (tree == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -262,7 +262,7 @@ GTreeIterValue* GTreeIterValueCreate(GTree* tree) {
 
 // Create a new static GTreeIterValue for the GTree 'tree' with 
 // 'rootval' the value of its root node
-GTreeIterValue GTreeIterValueCreateStatic(GTree* tree) {
+GTreeIterValue _GTreeIterValueCreateStatic(GTree* const tree) {
 #if BUILDMODE == 0
   if (tree == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -284,7 +284,7 @@ GTreeIterValue GTreeIterValueCreateStatic(GTree* tree) {
 // Update the GTreeIterDepth 'that' in case its attached GTree has been 
 // modified
 // The node sequence doesn't include the root node of the attached tree
-void GTreeIterDepthUpdate(GTreeIterDepth* that) {
+void GTreeIterDepthUpdate(GTreeIterDepth* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -320,7 +320,7 @@ void GTreeIterCreateSequenceDepthFirst(GSetGTree* seq, GTree* tree) {
 // Update the GTreeIterBreadth 'that' in case its attached GTree has 
 // been modified
 // The node sequence doesn't include the root node of the attached tree
-void GTreeIterBreadthUpdate(GTreeIterBreadth* that) {
+void GTreeIterBreadthUpdate(GTreeIterBreadth* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -360,7 +360,7 @@ void GTreeIterCreateSequenceBreadthFirst(GSetGTree* seq, GTree* tree,
 // Update the GTreeIterValue 'that' in case its attached GTree has been 
 // modified
 // The node sequence doesn't include the root node of the attached tree
-void GTreeIterValueUpdate(GTreeIterValue* that) {
+void GTreeIterValueUpdate(GTreeIterValue* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -408,7 +408,7 @@ void _GTreeIterFree(GTreeIter** that) {
 }
 
 // Free the memory used by the static iterator 'that'
-void _GTreeIterFreeStatic(GTreeIter* that) {
+void _GTreeIterFreeStatic(GTreeIter* const that) {
   // Check argument
   if (that == NULL)
     // Nothing to do

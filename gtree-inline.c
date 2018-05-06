@@ -8,7 +8,7 @@
 #if BUILDMODE != 0
 inline
 #endif
-void* GTreeData(GTree* that) {
+void* _GTreeData(const GTree* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -23,7 +23,7 @@ void* GTreeData(GTree* that) {
 #if BUILDMODE != 0
 inline
 #endif
-GTree* GTreeParent(GTree* that) {
+GTree* _GTreeParent(const GTree* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -38,7 +38,7 @@ GTree* GTreeParent(GTree* that) {
 #if BUILDMODE != 0
 inline
 #endif
-void GTreeSetData(GTree* that, void* data) {
+void _GTreeSetData(GTree* const that, void* const data) {
 #if BUILDMODE == 0
   if (that == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -53,7 +53,7 @@ void GTreeSetData(GTree* that, void* data) {
 #if BUILDMODE != 0
 inline
 #endif
-GSetGTree* GTreeSubtrees(GTree* that) {
+GSetGTree* _GTreeSubtrees(const GTree* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -61,7 +61,7 @@ GSetGTree* GTreeSubtrees(GTree* that) {
     PBErrCatch(GSetErr);
   }
 #endif
-  return &(that->_subtrees);
+  return (GSetGTree*)&(that->_subtrees);
 }
 
 // Return true if the GTree 'that' is a root
@@ -69,7 +69,7 @@ GSetGTree* GTreeSubtrees(GTree* that) {
 #if BUILDMODE != 0
 inline
 #endif
-bool GTreeIsRoot(GTree* that) {
+bool _GTreeIsRoot(const GTree* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -85,7 +85,7 @@ bool GTreeIsRoot(GTree* that) {
 #if BUILDMODE != 0
 inline
 #endif
-bool GTreeIsLeaf(GTree* that) {
+bool _GTreeIsLeaf(const GTree* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -106,7 +106,7 @@ bool GTreeIsLeaf(GTree* that) {
 #if BUILDMODE != 0
 inline
 #endif 
-void _GTreeIterReset(GTreeIter* that) {
+void _GTreeIterReset(GTreeIter* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -121,7 +121,7 @@ void _GTreeIterReset(GTreeIter* that) {
 #if BUILDMODE != 0
 inline
 #endif 
-void _GTreeIterToEnd(GTreeIter* that) {
+void _GTreeIterToEnd(GTreeIter* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -138,7 +138,7 @@ void _GTreeIterToEnd(GTreeIter* that) {
 #if BUILDMODE != 0
 inline
 #endif 
-bool _GTreeIterStep(GTreeIter* that) {
+bool _GTreeIterStep(GTreeIter* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -164,7 +164,7 @@ bool _GTreeIterStep(GTreeIter* that) {
 #if BUILDMODE != 0
 inline
 #endif 
-bool _GTreeIterStepBack(GTreeIter* that) {
+bool _GTreeIterStepBack(GTreeIter* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -193,8 +193,8 @@ bool _GTreeIterStepBack(GTreeIter* that) {
 #if BUILDMODE != 0
 inline
 #endif 
-void _GTreeIterApply(GTreeIter* that, 
-  void(*fun)(void* data, void* param), void* param) {
+void _GTreeIterApply(GTreeIter* const that, 
+  void(*fun)(void* const data, void* const param), void* const param) {
 #if BUILDMODE == 0
   if (that == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -225,7 +225,7 @@ void _GTreeIterApply(GTreeIter* that,
 #if BUILDMODE != 0
 inline
 #endif 
-bool _GTreeIterIsFirst(GTreeIter* that) {
+bool _GTreeIterIsFirst(const GTreeIter* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -242,7 +242,7 @@ bool _GTreeIterIsFirst(GTreeIter* that) {
 #if BUILDMODE != 0
 inline
 #endif 
-bool _GTreeIterIsLast(GTreeIter* that) {
+bool _GTreeIterIsLast(const GTreeIter* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -257,7 +257,8 @@ bool _GTreeIterIsLast(GTreeIter* that) {
 #if BUILDMODE != 0
 inline
 #endif 
-void _GTreeIterDepthSetGTree(GTreeIterDepth* that, GTree* tree) {
+void _GTreeIterDepthSetGTree(GTreeIterDepth* const that, 
+  GTree* const tree) {
 #if BUILDMODE == 0
   if (that == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -280,7 +281,8 @@ void _GTreeIterDepthSetGTree(GTreeIterDepth* that, GTree* tree) {
 #if BUILDMODE != 0
 inline
 #endif 
-void _GTreeIterBreadthSetGTree(GTreeIterBreadth* that, GTree* tree) {
+void _GTreeIterBreadthSetGTree(GTreeIterBreadth* const that, 
+  GTree* tree) {
 #if BUILDMODE == 0
   if (that == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -303,7 +305,8 @@ void _GTreeIterBreadthSetGTree(GTreeIterBreadth* that, GTree* tree) {
 #if BUILDMODE != 0
 inline
 #endif 
-void _GTreeIterValueSetGTree(GTreeIterValue* that, GTree* tree) {
+void _GTreeIterValueSetGTree(GTreeIterValue* const that, 
+  GTree* const tree) {
 #if BUILDMODE == 0
   if (that == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -328,7 +331,7 @@ void _GTreeIterValueSetGTree(GTreeIterValue* that, GTree* tree) {
 #if BUILDMODE != 0
 inline
 #endif 
-void* _GTreeIterGetData(GTreeIter* that) {
+void* _GTreeIterGetData(const GTreeIter* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -348,7 +351,7 @@ void* _GTreeIterGetData(GTreeIter* that) {
 #if BUILDMODE != 0
 inline
 #endif 
-GTree* _GTreeIterGetGTree(GTreeIter* that) {
+GTree* _GTreeIterGetGTree(const GTreeIter* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -363,7 +366,7 @@ GTree* _GTreeIterGetGTree(GTreeIter* that) {
 #if BUILDMODE != 0
 inline
 #endif 
-GTree* _GTreeIterGTree(GTreeIter* that) {
+GTree* _GTreeIterGTree(const GTreeIter* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -378,7 +381,7 @@ GTree* _GTreeIterGTree(GTreeIter* that) {
 #if BUILDMODE != 0
 inline
 #endif 
-GSetGTree* _GTreeIterSeq(GTreeIter* that) {
+GSetGTree* _GTreeIterSeq(const GTreeIter* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
     GTreeErr->_type = PBErrTypeNullPointer;
@@ -386,6 +389,6 @@ GSetGTree* _GTreeIterSeq(GTreeIter* that) {
     PBErrCatch(GSetErr);
   }
 #endif
-  return &(that->_seq);
+  return (GSetGTree*)&(that->_seq);
 }
 
