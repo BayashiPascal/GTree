@@ -104,10 +104,10 @@ inline GTree* _GTreeSubtree(const GTree* const that, const int iSubtree) {
   return GSetGet(_GTreeSubtrees(that), iSubtree);
 }
 inline GTree* _GTreeFirstSubtree(const GTree* const that) {
-  return GSetFirst(_GTreeSubtrees(that));
+  return GSetHead(_GTreeSubtrees(that));
 }
 inline GTree* _GTreeLastSubtree(const GTree* const that) {
-  return GSetLast(_GTreeSubtrees(that));
+  return GSetTail(_GTreeSubtrees(that));
 }
 inline GTree* _GTreePopSubtree(GTree* const that) {
   return GSetPop(_GTreeSubtrees(that));
