@@ -389,8 +389,8 @@ void GTreeIterCreateSequenceValueFirst(GSetGTree* seq, GTree* tree,
       GSetIterForwardCreateStatic(GTreeSubtrees(tree));
     do {
       GTree* subtree = GSetIterGet(&iter);
-      GSetElem* elem = GSetIterGetElem(&iter);
-      GTreeIterCreateSequenceValueFirst(seq, subtree, elem->_sortVal);
+      GTreeIterCreateSequenceValueFirst(seq, subtree, 
+        GSetIterGetSortVal(&iter));
     } while (GSetIterStep(&iter));
   }
 }
