@@ -13,230 +13,230 @@
 #include "pberr.h"
 #include "gset.h"
 
-// ----------- GTree
+// ----------- GenTree
 
 // ================= Define ==================
 
 // ================= Data structure ===================
-
-typedef struct GTree {
+struct GenTree;
+typedef struct GenTree {
   // Parent node
-  GTree* _parent;
+  struct GenTree* _parent;
   // Branches
   // Branch cannot be null, if the user tries to add a null branch 
   // nothing happen
-  GSetGTree _subtrees;
+  GSetGenTree _subtrees;
   // User data
   void* _data;
-} GTree;
+} GenTree;
 
 // ================ Functions declaration ====================
 
-// Create a new GTree
-GTree* GTreeCreate(void);
+// Create a new GenTree
+GenTree* GenTreeCreate(void);
 
-// Create a new static GTree
-GTree GTreeCreateStatic(void);
+// Create a new static GenTree
+GenTree GenTreeCreateStatic(void);
 
-// Create a new GTree with user data 'data'
-GTree* GTreeCreateData(void* const data);
+// Create a new GenTree with user data 'data'
+GenTree* GenTreeCreateData(void* const data);
 
-// Free the memory used by the GTree 'that'
+// Free the memory used by the GenTree 'that'
 // If 'that' is not a root node it is cut prior to be freed
 // Subtrees are recursively freed
 // User data must be freed by the user
-void _GTreeFree(GTree** that);
+void _GenTreeFree(GenTree** that);
 
-// Free the memory used by the static GTree 'that'
+// Free the memory used by the static GenTree 'that'
 // If 'that' is not a root node it is cut prior to be freed
 // Subtrees are recursively freed
 // User data must be freed by the user
-void _GTreeFreeStatic(GTree* that);
+void _GenTreeFreeStatic(GenTree* that);
 
-// Get the user data of the GTree 'that'
+// Get the user data of the GenTree 'that'
 #if BUILDMODE != 0
 inline
 #endif
-void* _GTreeData(const GTree* const that);
+void* _GenTreeData(const GenTree* const that);
 
-// Set the user data of the GTree 'that' to 'data'
+// Set the user data of the GenTree 'that' to 'data'
 #if BUILDMODE != 0
 inline
 #endif
-void _GTreeSetData(GTree* const that, void* const data);
+void _GenTreeSetData(GenTree* const that, void* const data);
 
-// Get the set of subtrees of the GTree 'that'
+// Get the set of subtrees of the GenTree 'that'
 #if BUILDMODE != 0
 inline
 #endif
-GSetGTree* _GTreeSubtrees(const GTree* const that);
+GSetGenTree* _GenTreeSubtrees(const GenTree* const that);
 
-// Disconnect the GTree 'that' from its parent
+// Disconnect the GenTree 'that' from its parent
 // If it has no parent, do nothing
-void _GTreeCut(GTree* const that);
+void _GenTreeCut(GenTree* const that);
 
-// Return true if the GTree 'that' is a root
+// Return true if the GenTree 'that' is a root
 // Return false else
 #if BUILDMODE != 0
 inline
 #endif
-bool _GTreeIsRoot(const GTree* const that);
+bool _GenTreeIsRoot(const GenTree* const that);
 
-// Return true if the GTree 'that' is a leaf
+// Return true if the GenTree 'that' is a leaf
 // Return false else
 #if BUILDMODE != 0
 inline
 #endif
-bool _GTreeIsLeaf(const GTree* const that);
+bool _GenTreeIsLeaf(const GenTree* const that);
 
-// Return the parent of the GTree 'that'
+// Return the parent of the GenTree 'that'
 #if BUILDMODE != 0
 inline
 #endif
-GTree* _GTreeParent(const GTree* const that);
+GenTree* _GenTreeParent(const GenTree* const that);
 
-// Return the number of subtrees of the GTree 'that' and their subtrees 
+// Return the number of subtrees of the GenTree 'that' and their subtrees 
 // recursively
-int _GTreeGetSize(const GTree* const that);
+int _GenTreeGetSize(const GenTree* const that);
 
 // Wrapping of GSet functions
-inline GTree* _GTreeSubtree(const GTree* const that, const int iSubtree) {
-  return GSetGet(_GTreeSubtrees(that), iSubtree);
+inline GenTree* _GenTreeSubtree(const GenTree* const that, const int iSubtree) {
+  return GSetGet(_GenTreeSubtrees(that), iSubtree);
 }
-inline GTree* _GTreeFirstSubtree(const GTree* const that) {
-  return GSetHead(_GTreeSubtrees(that));
+inline GenTree* _GenTreeFirstSubtree(const GenTree* const that) {
+  return GSetHead(_GenTreeSubtrees(that));
 }
-inline GTree* _GTreeLastSubtree(const GTree* const that) {
-  return GSetTail(_GTreeSubtrees(that));
+inline GenTree* _GenTreeLastSubtree(const GenTree* const that) {
+  return GSetTail(_GenTreeSubtrees(that));
 }
-inline GTree* _GTreePopSubtree(GTree* const that) {
-  return GSetPop(_GTreeSubtrees(that));
+inline GenTree* _GenTreePopSubtree(GenTree* const that) {
+  return GSetPop(_GenTreeSubtrees(that));
 }
-inline GTree* _GTreeDropSubtree(GTree* const that) {
-  return GSetDrop(_GTreeSubtrees(that));
+inline GenTree* _GenTreeDropSubtree(GenTree* const that) {
+  return GSetDrop(_GenTreeSubtrees(that));
 }
-inline GTree* _GTreeRemoveSubtree(GTree* const that, const int iSubtree) {
-  return GSetRemove((GSet*)_GTreeSubtrees(that), iSubtree);
+inline GenTree* _GenTreeRemoveSubtree(GenTree* const that, const int iSubtree) {
+  return GSetRemove((GSet*)_GenTreeSubtrees(that), iSubtree);
 }
 
-inline void _GTreePushSubtree(GTree* const that, GTree* const tree) {
+inline void _GenTreePushSubtree(GenTree* const that, GenTree* const tree) {
   if (!tree) return;
-  GSetPush(_GTreeSubtrees(that), tree);
+  GSetPush(_GenTreeSubtrees(that), tree);
   tree->_parent = that;
 }
-inline void _GTreeAddSortSubTree(GTree* const that, GTree* const tree, 
+inline void _GenTreeAddSortSubTree(GenTree* const that, GenTree* const tree, 
   const float sortVal) {
   if (!tree) return;
-  GSetAddSort(_GTreeSubtrees(that), tree, sortVal);
+  GSetAddSort(_GenTreeSubtrees(that), tree, sortVal);
   tree->_parent = that;
 }
-inline void _GTreeInsertSubtree(GTree* const that, GTree* const tree, 
+inline void _GenTreeInsertSubtree(GenTree* const that, GenTree* const tree, 
   const int pos) {
   if (!tree) return;
-  GSetInsert(_GTreeSubtrees(that), tree, pos);
+  GSetInsert(_GenTreeSubtrees(that), tree, pos);
   tree->_parent = that;
 }
-inline void _GTreeAppendSubtree(GTree* const that, GTree* const tree) {
+inline void _GenTreeAppendSubtree(GenTree* const that, GenTree* const tree) {
   if (!tree) return;
-  GSetAppend(_GTreeSubtrees(that), tree);
+  GSetAppend(_GenTreeSubtrees(that), tree);
   tree->_parent = that;
 }
 
-inline void _GTreePushData(GTree* const that, void* const data) {
-  GTree* tree = GTreeCreateData(data);
-  GSetPush(_GTreeSubtrees(that), tree);
+inline void _GenTreePushData(GenTree* const that, void* const data) {
+  GenTree* tree = GenTreeCreateData(data);
+  GSetPush(_GenTreeSubtrees(that), tree);
   tree->_parent = that;
 }
-inline void _GTreeAddSortData(GTree* const that, void* const data, 
+inline void _GenTreeAddSortData(GenTree* const that, void* const data, 
   const float sortVal) {
-  GTree* tree = GTreeCreateData(data);
-  GSetAddSort(_GTreeSubtrees(that), tree, sortVal);
+  GenTree* tree = GenTreeCreateData(data);
+  GSetAddSort(_GenTreeSubtrees(that), tree, sortVal);
   tree->_parent = that;
 }
-inline void _GTreeInsertData(GTree* const that, void* const data, 
+inline void _GenTreeInsertData(GenTree* const that, void* const data, 
   const int pos) {
-  GTree* tree = GTreeCreateData(data);
-  GSetInsert(_GTreeSubtrees(that), tree, pos);
+  GenTree* tree = GenTreeCreateData(data);
+  GSetInsert(_GenTreeSubtrees(that), tree, pos);
   tree->_parent = that;
 }
-inline void _GTreeAppendData(GTree* const that, void* const data) {
-  GTree* tree = GTreeCreateData(data);
-  GSetAppend(_GTreeSubtrees(that), tree);
+inline void _GenTreeAppendData(GenTree* const that, void* const data) {
+  GenTree* tree = GenTreeCreateData(data);
+  GSetAppend(_GenTreeSubtrees(that), tree);
   tree->_parent = that;
 }
 
-// ----------- GTreeIter
+// ----------- GenTreeIter
 
 // ================= Define ==================
 
 // ================= Data structure ===================
 
-typedef struct GTreeIter {
+typedef struct GenTreeIter {
   // Attached tree
-  GTree* _tree;
+  GenTree* _tree;
   // Current position
   GSetElem* _curPos;
   // GSet to memorize nodes sequence
   // The node sequence doesn't include the root node of the attached tree
-  GSetGTree _seq;
-} GTreeIter;
+  GSetGenTree _seq;
+} GenTreeIter;
 
-typedef struct GTreeIterDepth {GTreeIter _iter;} GTreeIterDepth;
-typedef struct GTreeIterBreadth {GTreeIter _iter;} GTreeIterBreadth;
-typedef struct GTreeIterValue {GTreeIter _iter;} GTreeIterValue;
+typedef struct GenTreeIterDepth {GenTreeIter _iter;} GenTreeIterDepth;
+typedef struct GenTreeIterBreadth {GenTreeIter _iter;} GenTreeIterBreadth;
+typedef struct GenTreeIterValue {GenTreeIter _iter;} GenTreeIterValue;
 
 // ================ Functions declaration ====================
 
-// Create a new GTreeIterDepth for the GTree 'tree'
-GTreeIterDepth* _GTreeIterDepthCreate(GTree* const tree);
+// Create a new GenTreeIterDepth for the GenTree 'tree'
+GenTreeIterDepth* _GenTreeIterDepthCreate(GenTree* const tree);
 
-// Create a new static GTreeIterDepth for the GTree 'tree'
-GTreeIterDepth _GTreeIterDepthCreateStatic(GTree* const tree);
+// Create a new static GenTreeIterDepth for the GenTree 'tree'
+GenTreeIterDepth _GenTreeIterDepthCreateStatic(GenTree* const tree);
 
-// Create a new GTreeIterBreadth for the GTree 'tree'
-GTreeIterBreadth* _GTreeIterBreadthCreate(GTree* const tree);
+// Create a new GenTreeIterBreadth for the GenTree 'tree'
+GenTreeIterBreadth* _GenTreeIterBreadthCreate(GenTree* const tree);
 
-// Create a new static GTreeIterBreadth for the GTree 'tree'
-GTreeIterBreadth _GTreeIterBreadthCreateStatic(GTree* const tree);
+// Create a new static GenTreeIterBreadth for the GenTree 'tree'
+GenTreeIterBreadth _GenTreeIterBreadthCreateStatic(GenTree* const tree);
 
-// Create a new GTreeIterValue for the GTree 'tree'
-GTreeIterValue* _GTreeIterValueCreate(GTree* const tree);
+// Create a new GenTreeIterValue for the GenTree 'tree'
+GenTreeIterValue* _GenTreeIterValueCreate(GenTree* const tree);
 
-// Create a new static GTreeIterValue for the GTree 'tree'
-GTreeIterValue _GTreeIterValueCreateStatic(GTree* const tree);
+// Create a new static GenTreeIterValue for the GenTree 'tree'
+GenTreeIterValue _GenTreeIterValueCreateStatic(GenTree* const tree);
 
-// Update the GTreeIterDepth 'that' in case its attached GTree has been 
+// Update the GenTreeIterDepth 'that' in case its attached GenTree has been 
 // modified
 // The node sequence doesn't include the root node of the attached tree
-void GTreeIterDepthUpdate(GTreeIterDepth* const that);
+void GenTreeIterDepthUpdate(GenTreeIterDepth* const that);
 
-// Update the GTreeIterBreadth 'that' in case its attached GTree has 
+// Update the GenTreeIterBreadth 'that' in case its attached GenTree has 
 // been modified
 // The node sequence doesn't include the root node of the attached tree
-void GTreeIterBreadthUpdate(GTreeIterBreadth* const that);
+void GenTreeIterBreadthUpdate(GenTreeIterBreadth* const that);
 
-// Update the GTreeIterValue 'that' in case its attached GTree has been 
+// Update the GenTreeIterValue 'that' in case its attached GenTree has been 
 // modified
 // The node sequence doesn't include the root node of the attached tree
-void GTreeIterValueUpdate(GTreeIterValue* const that);
+void GenTreeIterValueUpdate(GenTreeIterValue* const that);
 
 // Free the memory used by the iterator 'that'
-void _GTreeIterFree(GTreeIter** that);
+void _GenTreeIterFree(GenTreeIter** that);
 
 // Free the memory used by the static iterator 'that'
-void _GTreeIterFreeStatic(GTreeIter* const that);
+void _GenTreeIterFreeStatic(GenTreeIter* const that);
 
 // Reset the iterator 'that' at its start position
 #if BUILDMODE != 0
 inline
 #endif 
-void _GTreeIterReset(GTreeIter* const that);
+void _GenTreeIterReset(GenTreeIter* const that);
 
 // Reset the iterator 'that' at its end position
 #if BUILDMODE != 0
 inline
 #endif 
-void _GTreeIterToEnd(GTreeIter* const that);
+void _GenTreeIterToEnd(GenTreeIter* const that);
 
 // Step the iterator 'that' at its next position
 // Return true if it could move to the next position
@@ -244,7 +244,7 @@ void _GTreeIterToEnd(GTreeIter* const that);
 #if BUILDMODE != 0
 inline
 #endif 
-bool _GTreeIterStep(GTreeIter* const that);
+bool _GenTreeIterStep(GenTreeIter* const that);
 
 // Step back the iterator 'that' at its next position
 // Return true if it could move to the previous position
@@ -252,9 +252,9 @@ bool _GTreeIterStep(GTreeIter* const that);
 #if BUILDMODE != 0
 inline
 #endif 
-bool _GTreeIterStepBack(GTreeIter* const that);
+bool _GenTreeIterStepBack(GenTreeIter* const that);
 
-// Apply a function to all elements' data of the GTree of the iterator
+// Apply a function to all elements' data of the GenTree of the iterator
 // The iterator is first reset, then the function is apply sequencially
 // using the Step function of the iterator
 // The applied function takes to void* arguments: 'data' is the _data
@@ -263,440 +263,440 @@ bool _GTreeIterStepBack(GTreeIter* const that);
 #if BUILDMODE != 0
 inline
 #endif 
-void _GTreeIterApply(GTreeIter* const that, 
+void _GenTreeIterApply(GenTreeIter* const that, 
   void(*fun)(void* const data, void* const param), void* const param);
 
 // Return true if the iterator is at the start of the elements (from
-// its point of view, not the order in the GTree)
+// its point of view, not the order in the GenTree)
 // Return false else
 #if BUILDMODE != 0
 inline
 #endif 
-bool _GTreeIterIsFirst(const GTreeIter* const that);
+bool _GenTreeIterIsFirst(const GenTreeIter* const that);
 
 // Return true if the iterator is at the end of the elements (from
-// its point of view, not the order in the GTree)
+// its point of view, not the order in the GenTree)
 // Return false else
 #if BUILDMODE != 0
 inline
 #endif 
-bool _GTreeIterIsLast(const GTreeIter* const that);
+bool _GenTreeIterIsLast(const GenTreeIter* const that);
 
 // Change the attached tree of the iterator, and reset it
 #if BUILDMODE != 0
 inline
 #endif 
-void _GTreeIterDepthSetGTree(GTreeIterDepth* const that, 
-  GTree* const tree);
+void _GenTreeIterDepthSetGenTree(GenTreeIterDepth* const that, 
+  GenTree* const tree);
 #if BUILDMODE != 0
 inline
 #endif 
-void _GTreeIterBreadthSetGTree(GTreeIterBreadth* const that, 
-  GTree* const tree);
+void _GenTreeIterBreadthSetGenTree(GenTreeIterBreadth* const that, 
+  GenTree* const tree);
 #if BUILDMODE != 0
 inline
 #endif 
-void _GTreeIterValueSetGTree(GTreeIterValue* const that, 
-  GTree* const tree);
+void _GenTreeIterValueSetGenTree(GenTreeIterValue* const that, 
+  GenTree* const tree);
 
 // Return the user data of the tree currently pointed to by the iterator
 #if BUILDMODE != 0
 inline
 #endif 
-void* _GTreeIterGetData(const GTreeIter* const that);
+void* _GenTreeIterGetData(const GenTreeIter* const that);
 
 // Return the tree currently pointed to by the iterator
 #if BUILDMODE != 0
 inline
 #endif 
-GTree* _GTreeIterGetGTree(const GTreeIter* const that);
+GenTree* _GenTreeIterGetGenTree(const GenTreeIter* const that);
 
 // Return the tree associated to the iterator 'that'
 #if BUILDMODE != 0
 inline
 #endif 
-GTree* _GTreeIterGTree(const GTreeIter* const that);
+GenTree* _GenTreeIterGenTree(const GenTreeIter* const that);
 
 // Return the sequence of the iterator
 #if BUILDMODE != 0
 inline
 #endif 
-GSetGTree* _GTreeIterSeq(const GTreeIter* const that);
+GSetGenTree* _GenTreeIterSeq(const GenTreeIter* const that);
 
-// ================= Typed GTree ==================
+// ================= Typed GenTree ==================
 
-typedef struct GTreeStr {GTree _tree;} GTreeStr;
-#define GTreeStrCreate() ((GTreeStr*)GTreeCreate())
-inline GTreeStr GTreeStrCreateStatic(void) 
-  {GTreeStr ret = {._tree=GTreeCreateStatic()}; return ret;}
-#define GTreeStrCreateData(Data) ((GTreeStr*)GTreeCreateData(Data))
-inline char* _GTreeStrData(const GTreeStr* const that) {
-  return (char*)_GTreeData((const GTree* const)that);
+typedef struct GenTreeStr {GenTree _tree;} GenTreeStr;
+#define GenTreeStrCreate() ((GenTreeStr*)GenTreeCreate())
+inline GenTreeStr GenTreeStrCreateStatic(void) 
+  {GenTreeStr ret = {._tree=GenTreeCreateStatic()}; return ret;}
+#define GenTreeStrCreateData(Data) ((GenTreeStr*)GenTreeCreateData(Data))
+inline char* _GenTreeStrData(const GenTreeStr* const that) {
+  return (char*)_GenTreeData((const GenTree* const)that);
 }
-inline void _GTreeStrSetData(GTreeStr* const that, char* const data) {
-  _GTreeSetData((GTree* const)that, (void* const)data);
+inline void _GenTreeStrSetData(GenTreeStr* const that, char* const data) {
+  _GenTreeSetData((GenTree* const)that, (void* const)data);
 }
-inline GSetGTreeStr* _GTreeStrSubtrees(const GTreeStr* const that) {
-  return (GSetGTreeStr*)_GTreeSubtrees((const GTree* const)that);
+inline GSetGenTreeStr* _GenTreeStrSubtrees(const GenTreeStr* const that) {
+  return (GSetGenTreeStr*)_GenTreeSubtrees((const GenTree* const)that);
 }
-inline GTreeStr* _GTreeStrParent(const GTreeStr* const that) {
-  return (GTreeStr*)_GTreeParent((const GTree* const)that);
+inline GenTreeStr* _GenTreeStrParent(const GenTreeStr* const that) {
+  return (GenTreeStr*)_GenTreeParent((const GenTree* const)that);
 }
-inline void _GTreeStrPushData(GTreeStr* const that, char* const data) {
-  _GTreePushData((GTree* const)that, (void* const)data);
+inline void _GenTreeStrPushData(GenTreeStr* const that, char* const data) {
+  _GenTreePushData((GenTree* const)that, (void* const)data);
 }
-inline void _GTreeStrAddSortData(GTreeStr* const that, char* const data, 
+inline void _GenTreeStrAddSortData(GenTreeStr* const that, char* const data, 
   const float sortVal) {
-  _GTreeAddSortData((GTree* const)that, (void* const)data, sortVal);
+  _GenTreeAddSortData((GenTree* const)that, (void* const)data, sortVal);
 }
-inline void _GTreeStrInsertData(GTreeStr* const that, char* const data, 
+inline void _GenTreeStrInsertData(GenTreeStr* const that, char* const data, 
   const int pos) {
-  _GTreeInsertData((GTree* const)that, (void* const)data, pos);
+  _GenTreeInsertData((GenTree* const)that, (void* const)data, pos);
 }
-inline void _GTreeStrAppendData(GTreeStr* const that, char* const data) {
-  _GTreeAppendData((GTree* const)that, (void* const)data);
+inline void _GenTreeStrAppendData(GenTreeStr* const that, char* const data) {
+  _GenTreeAppendData((GenTree* const)that, (void* const)data);
 }
-inline GTreeStr* _GTreeStrSubtree(const GTreeStr* const that, 
+inline GenTreeStr* _GenTreeStrSubtree(const GenTreeStr* const that, 
   const int iSubtree) {
-  return (GTreeStr*)_GTreeSubtree((const GTree* const)that, iSubtree);
+  return (GenTreeStr*)_GenTreeSubtree((const GenTree* const)that, iSubtree);
 }
-inline GTreeStr* _GTreeStrFirstSubtree(const GTreeStr* const that) {
-  return (GTreeStr*)_GTreeFirstSubtree((const GTree* const)that);
+inline GenTreeStr* _GenTreeStrFirstSubtree(const GenTreeStr* const that) {
+  return (GenTreeStr*)_GenTreeFirstSubtree((const GenTree* const)that);
 }
-inline GTreeStr* _GTreeStrLastSubtree(const GTreeStr* const that) {
-  return (GTreeStr*)_GTreeLastSubtree((const GTree* const)that);
+inline GenTreeStr* _GenTreeStrLastSubtree(const GenTreeStr* const that) {
+  return (GenTreeStr*)_GenTreeLastSubtree((const GenTree* const)that);
 }
-inline GTreeStr* _GTreeStrPopSubtree(GTreeStr* const that) {
-  return (GTreeStr*)_GTreePopSubtree((GTree* const)that);
+inline GenTreeStr* _GenTreeStrPopSubtree(GenTreeStr* const that) {
+  return (GenTreeStr*)_GenTreePopSubtree((GenTree* const)that);
 }
-inline GTreeStr* _GTreeStrDropSubtree(GTreeStr* const that) {
-  return (GTreeStr*)_GTreeDropSubtree((GTree* const)that);
+inline GenTreeStr* _GenTreeStrDropSubtree(GenTreeStr* const that) {
+  return (GenTreeStr*)_GenTreeDropSubtree((GenTree* const)that);
 }
-inline GTreeStr* _GTreeStrRemoveSubtree(GTreeStr* const that, 
+inline GenTreeStr* _GenTreeStrRemoveSubtree(GenTreeStr* const that, 
   const int iSubtree) {
-  return (GTreeStr*)_GTreeRemoveSubtree((GTree* const)that, iSubtree);
+  return (GenTreeStr*)_GenTreeRemoveSubtree((GenTree* const)that, iSubtree);
 }
-inline void _GTreeStrPushSubtree(GTreeStr* const that, 
-  GTreeStr* const tree) {
-  _GTreePushSubtree((GTree* const)that, (GTree* const)tree);
+inline void _GenTreeStrPushSubtree(GenTreeStr* const that, 
+  GenTreeStr* const tree) {
+  _GenTreePushSubtree((GenTree* const)that, (GenTree* const)tree);
 }
-inline void _GTreeStrAddSortSubTree(GTreeStr* const that, 
-  GTreeStr* const tree, const float sortVal) {
-  _GTreeAddSortSubTree((GTree* const)that, (GTree* const)tree, sortVal);
+inline void _GenTreeStrAddSortSubTree(GenTreeStr* const that, 
+  GenTreeStr* const tree, const float sortVal) {
+  _GenTreeAddSortSubTree((GenTree* const)that, (GenTree* const)tree, sortVal);
 }
-inline void _GTreeStrInsertSubtree(GTreeStr* const that, 
-  GTreeStr* const tree, const int pos) {
-  _GTreeInsertSubtree((GTree* const)that, (GTree* const)tree, pos);
+inline void _GenTreeStrInsertSubtree(GenTreeStr* const that, 
+  GenTreeStr* const tree, const int pos) {
+  _GenTreeInsertSubtree((GenTree* const)that, (GenTree* const)tree, pos);
 }
-inline void _GTreeStrAppendSubtree(GTreeStr* const that, 
-  GTreeStr* const tree) {
-  _GTreeAppendSubtree((GTree* const)that, (GTree* const)tree);
+inline void _GenTreeStrAppendSubtree(GenTreeStr* const that, 
+  GenTreeStr* const tree) {
+  _GenTreeAppendSubtree((GenTree* const)that, (GenTree* const)tree);
 }
 
 // ================ Polymorphism ====================
 
-#define GTreeFree(RefTree) _Generic(RefTree, \
-  GTree**: _GTreeFree, \
-  GTreeStr**: _GTreeFree, \
-  default: PBErrInvalidPolymorphism) ((GTree**)(RefTree))
+#define GenTreeFree(RefTree) _Generic(RefTree, \
+  GenTree**: _GenTreeFree, \
+  GenTreeStr**: _GenTreeFree, \
+  default: PBErrInvalidPolymorphism) ((GenTree**)(RefTree))
 
-#define GTreeFreeStatic(Tree) _Generic(Tree, \
-  GTree*: _GTreeFreeStatic, \
-  const GTree*: _GTreeFreeStatic, \
-  GTreeStr*: _GTreeFreeStatic, \
-  const GTreeStr*: _GTreeFreeStatic, \
-  default: PBErrInvalidPolymorphism) ((GTree*)(Tree))
+#define GenTreeFreeStatic(Tree) _Generic(Tree, \
+  GenTree*: _GenTreeFreeStatic, \
+  const GenTree*: _GenTreeFreeStatic, \
+  GenTreeStr*: _GenTreeFreeStatic, \
+  const GenTreeStr*: _GenTreeFreeStatic, \
+  default: PBErrInvalidPolymorphism) ((GenTree*)(Tree))
 
-#define GTreeParent(Tree) _Generic(Tree, \
-  GTree*: _GTreeParent, \
-  const GTree*: _GTreeParent, \
-  GTreeStr*: _GTreeStrParent, \
-  const GTreeStr*: _GTreeStrParent, \
+#define GenTreeParent(Tree) _Generic(Tree, \
+  GenTree*: _GenTreeParent, \
+  const GenTree*: _GenTreeParent, \
+  GenTreeStr*: _GenTreeStrParent, \
+  const GenTreeStr*: _GenTreeStrParent, \
   default: PBErrInvalidPolymorphism) (Tree)
 
-#define GTreeSubtrees(Tree) _Generic(Tree, \
-  GTree*: _GTreeSubtrees, \
-  const GTree*: _GTreeSubtrees, \
-  GTreeStr*: _GTreeStrSubtrees, \
-  const GTreeStr*: _GTreeStrSubtrees, \
+#define GenTreeSubtrees(Tree) _Generic(Tree, \
+  GenTree*: _GenTreeSubtrees, \
+  const GenTree*: _GenTreeSubtrees, \
+  GenTreeStr*: _GenTreeStrSubtrees, \
+  const GenTreeStr*: _GenTreeStrSubtrees, \
   default: PBErrInvalidPolymorphism) (Tree)
 
-#define GTreeData(Tree) _Generic(Tree, \
-  GTree*: _GTreeData, \
-  const GTree*: _GTreeData, \
-  GTreeStr*: _GTreeStrData, \
-  const GTreeStr*: _GTreeStrData, \
+#define GenTreeData(Tree) _Generic(Tree, \
+  GenTree*: _GenTreeData, \
+  const GenTree*: _GenTreeData, \
+  GenTreeStr*: _GenTreeStrData, \
+  const GenTreeStr*: _GenTreeStrData, \
   default: PBErrInvalidPolymorphism) (Tree)
 
-#define GTreeSetData(Tree, Data) _Generic(Tree, \
-  GTree*: _GTreeSetData, \
-  GTreeStr*: _GTreeStrSetData, \
+#define GenTreeSetData(Tree, Data) _Generic(Tree, \
+  GenTree*: _GenTreeSetData, \
+  GenTreeStr*: _GenTreeStrSetData, \
   default: PBErrInvalidPolymorphism) (Tree, Data)
 
-#define GTreeCut(Tree) _Generic(Tree, \
-  GTree*: _GTreeCut, \
-  GTreeStr*: _GTreeCut, \
-  default: PBErrInvalidPolymorphism) ((GTree*)(Tree))
+#define GenTreeCut(Tree) _Generic(Tree, \
+  GenTree*: _GenTreeCut, \
+  GenTreeStr*: _GenTreeCut, \
+  default: PBErrInvalidPolymorphism) ((GenTree*)(Tree))
 
-#define GTreeIsRoot(Tree) _Generic(Tree, \
-  GTree*: _GTreeIsRoot, \
-  const GTree*: _GTreeIsRoot, \
-  GTreeStr*: _GTreeIsRoot, \
-  const GTreeStr*: _GTreeIsRoot, \
-  default: PBErrInvalidPolymorphism) ((GTree*)(Tree))
+#define GenTreeIsRoot(Tree) _Generic(Tree, \
+  GenTree*: _GenTreeIsRoot, \
+  const GenTree*: _GenTreeIsRoot, \
+  GenTreeStr*: _GenTreeIsRoot, \
+  const GenTreeStr*: _GenTreeIsRoot, \
+  default: PBErrInvalidPolymorphism) ((GenTree*)(Tree))
 
-#define GTreeIsLeaf(Tree) _Generic(Tree, \
-  GTree*: _GTreeIsLeaf, \
-  const GTree*: _GTreeIsLeaf, \
-  GTreeStr*: _GTreeIsLeaf, \
-  const GTreeStr*: _GTreeIsLeaf, \
-  default: PBErrInvalidPolymorphism) ((GTree*)(Tree))
+#define GenTreeIsLeaf(Tree) _Generic(Tree, \
+  GenTree*: _GenTreeIsLeaf, \
+  const GenTree*: _GenTreeIsLeaf, \
+  GenTreeStr*: _GenTreeIsLeaf, \
+  const GenTreeStr*: _GenTreeIsLeaf, \
+  default: PBErrInvalidPolymorphism) ((GenTree*)(Tree))
 
-#define GTreeGetSize(Tree) _Generic(Tree, \
-  GTree*: _GTreeGetSize, \
-  const GTree*: _GTreeGetSize, \
-  GTreeStr*: _GTreeGetSize, \
-  const GTreeStr*: _GTreeGetSize, \
-  default: PBErrInvalidPolymorphism) ((GTree*)(Tree))
+#define GenTreeGetSize(Tree) _Generic(Tree, \
+  GenTree*: _GenTreeGetSize, \
+  const GenTree*: _GenTreeGetSize, \
+  GenTreeStr*: _GenTreeGetSize, \
+  const GenTreeStr*: _GenTreeGetSize, \
+  default: PBErrInvalidPolymorphism) ((GenTree*)(Tree))
 
-#define GTreePushData(Tree, Data) _Generic(Tree, \
-  GTree*: _GTreePushData, \
-  GTreeStr*: _GTreeStrPushData, \
+#define GenTreePushData(Tree, Data) _Generic(Tree, \
+  GenTree*: _GenTreePushData, \
+  GenTreeStr*: _GenTreeStrPushData, \
   default: PBErrInvalidPolymorphism) (Tree, Data);
 
-#define GTreeAddSortData(Tree, Data, SortVal) _Generic(Tree, \
-  GTree*: _GTreeAddSortData, \
-  GTreeStr*: _GTreeStrAddSortData, \
+#define GenTreeAddSortData(Tree, Data, SortVal) _Generic(Tree, \
+  GenTree*: _GenTreeAddSortData, \
+  GenTreeStr*: _GenTreeStrAddSortData, \
   default: PBErrInvalidPolymorphism) (Tree, Data, SortVal);
 
-#define GTreeInsertData(Tree, Data, Pos) _Generic(Tree, \
-  GTree*: _GTreeInsertData, \
-  GTreeStr*: _GTreeStrInsertData, \
+#define GenTreeInsertData(Tree, Data, Pos) _Generic(Tree, \
+  GenTree*: _GenTreeInsertData, \
+  GenTreeStr*: _GenTreeStrInsertData, \
   default: PBErrInvalidPolymorphism) (Tree, Data, Pos);
 
-#define GTreeAppendData(Tree, Data) _Generic(Tree, \
-  GTree*: _GTreeAppendData, \
-  GTreeStr*: _GTreeStrAppendData, \
+#define GenTreeAppendData(Tree, Data) _Generic(Tree, \
+  GenTree*: _GenTreeAppendData, \
+  GenTreeStr*: _GenTreeStrAppendData, \
   default: PBErrInvalidPolymorphism) (Tree, Data);
 
-#define GTreeSubtree(Tree, ISubtree) _Generic(Tree, \
-  GTree*: _GTreeSubtree, \
-  const GTree*: _GTreeSubtree, \
-  GTreeStr*: _GTreeStrSubtree, \
-  const GTreeStr*: _GTreeStrSubtree, \
+#define GenTreeSubtree(Tree, ISubtree) _Generic(Tree, \
+  GenTree*: _GenTreeSubtree, \
+  const GenTree*: _GenTreeSubtree, \
+  GenTreeStr*: _GenTreeStrSubtree, \
+  const GenTreeStr*: _GenTreeStrSubtree, \
   default: PBErrInvalidPolymorphism) (Tree, ISubtree)
 
-#define GTreeFirstSubtree(Tree) _Generic(Tree, \
-  GTree*: _GTreeFirstSubtree, \
-  const GTree*: _GTreeFirstSubtree, \
-  GTreeStr*: _GTreeStrFirstSubtree, \
-  const GTreeStr*: _GTreeStrFirstSubtree, \
+#define GenTreeFirstSubtree(Tree) _Generic(Tree, \
+  GenTree*: _GenTreeFirstSubtree, \
+  const GenTree*: _GenTreeFirstSubtree, \
+  GenTreeStr*: _GenTreeStrFirstSubtree, \
+  const GenTreeStr*: _GenTreeStrFirstSubtree, \
   default: PBErrInvalidPolymorphism) (Tree)
 
-#define GTreeLastSubtree(Tree) _Generic(Tree, \
-  GTree*: _GTreeLastSubtree, \
-  const GTree*: _GTreeLastSubtree, \
-  GTreeStr*: _GTreeStrLastSubtree, \
-  const GTreeStr*: _GTreeStrLastSubtree, \
+#define GenTreeLastSubtree(Tree) _Generic(Tree, \
+  GenTree*: _GenTreeLastSubtree, \
+  const GenTree*: _GenTreeLastSubtree, \
+  GenTreeStr*: _GenTreeStrLastSubtree, \
+  const GenTreeStr*: _GenTreeStrLastSubtree, \
   default: PBErrInvalidPolymorphism) (Tree)
 
-#define GTreePopSubtree(Tree) _Generic(Tree, \
-  GTree*: _GTreePopSubtree, \
-  GTreeStr*: _GTreeStrPopSubtree, \
+#define GenTreePopSubtree(Tree) _Generic(Tree, \
+  GenTree*: _GenTreePopSubtree, \
+  GenTreeStr*: _GenTreeStrPopSubtree, \
   default: PBErrInvalidPolymorphism) (Tree)
 
-#define GTreeDropSubtree(Tree) _Generic(Tree, \
-  GTree*: _GTreeDropSubtree, \
-  GTreeStr*: _GTreeStrDropSubtree, \
+#define GenTreeDropSubtree(Tree) _Generic(Tree, \
+  GenTree*: _GenTreeDropSubtree, \
+  GenTreeStr*: _GenTreeStrDropSubtree, \
   default: PBErrInvalidPolymorphism) (Tree)
 
-#define GTreeRemoveSubtree(Tree, ISubTree) _Generic(Tree, \
-  GTree*: _GTreeRemoveSubtree, \
-  GTreeStr*: _GTreeStrRemoveSubtree, \
+#define GenTreeRemoveSubtree(Tree, ISubTree) _Generic(Tree, \
+  GenTree*: _GenTreeRemoveSubtree, \
+  GenTreeStr*: _GenTreeStrRemoveSubtree, \
   default: PBErrInvalidPolymorphism) (Tree, ISubTree)
 
-#define GTreePushSubtree(Tree, SubTree) _Generic(Tree, \
-  GTree*: _GTreePushSubtree, \
-  GTreeStr*: _GTreeStrPushSubtree, \
+#define GenTreePushSubtree(Tree, SubTree) _Generic(Tree, \
+  GenTree*: _GenTreePushSubtree, \
+  GenTreeStr*: _GenTreeStrPushSubtree, \
   default: PBErrInvalidPolymorphism) (Tree, SubTree)
 
-#define GTreeAddSortSubtree(Tree, SubTree, SortVal) _Generic(Tree, \
-  GTree*: _GTreeAddSortSubtree, \
-  GTreeStr*: _GTreeStrAddSortSubtree, \
+#define GenTreeAddSortSubtree(Tree, SubTree, SortVal) _Generic(Tree, \
+  GenTree*: _GenTreeAddSortSubtree, \
+  GenTreeStr*: _GenTreeStrAddSortSubtree, \
   default: PBErrInvalidPolymorphism) (Tree, SubTree, SortVal)
 
-#define GTreeInsertSubtree(Tree, SubTree, Pos) _Generic(Tree, \
-  GTree*: _GTreeInsertSubtree, \
-  GTreeStr*: _GTreeStrInsertSubtree, \
+#define GenTreeInsertSubtree(Tree, SubTree, Pos) _Generic(Tree, \
+  GenTree*: _GenTreeInsertSubtree, \
+  GenTreeStr*: _GenTreeStrInsertSubtree, \
   default: PBErrInvalidPolymorphism) (Tree, SubTree, Pos)
 
-#define GTreeAppendSubtree(Tree, SubTree) _Generic(Tree, \
-  GTree*: _GTreeAppendSubtree, \
-  GTreeStr*: _GTreeStrAppendSubtree, \
+#define GenTreeAppendSubtree(Tree, SubTree) _Generic(Tree, \
+  GenTree*: _GenTreeAppendSubtree, \
+  GenTreeStr*: _GenTreeStrAppendSubtree, \
   default: PBErrInvalidPolymorphism) (Tree, SubTree)
 
-#define GTreeIterDepthCreate(Tree) _Generic(Tree, \
-  GTree*: _GTreeIterDepthCreate, \
-  const GTree*: _GTreeIterDepthCreate, \
-  GTreeStr*: _GTreeIterDepthCreate, \
-  const GTreeStr*: _GTreeIterDepthCreate, \
-  default: PBErrInvalidPolymorphism) ((GTree*)(Tree))
+#define GenTreeIterDepthCreate(Tree) _Generic(Tree, \
+  GenTree*: _GenTreeIterDepthCreate, \
+  const GenTree*: _GenTreeIterDepthCreate, \
+  GenTreeStr*: _GenTreeIterDepthCreate, \
+  const GenTreeStr*: _GenTreeIterDepthCreate, \
+  default: PBErrInvalidPolymorphism) ((GenTree*)(Tree))
 
-#define GTreeIterDepthCreateStatic(Tree) _Generic(Tree, \
-  GTree*: _GTreeIterDepthCreateStatic, \
-  const GTree*: _GTreeIterDepthCreateStatic, \
-  GTreeStr*: _GTreeIterDepthCreateStatic, \
-  const GTreeStr*: _GTreeIterDepthCreateStatic, \
-  default: PBErrInvalidPolymorphism) ((GTree*)(Tree))
+#define GenTreeIterDepthCreateStatic(Tree) _Generic(Tree, \
+  GenTree*: _GenTreeIterDepthCreateStatic, \
+  const GenTree*: _GenTreeIterDepthCreateStatic, \
+  GenTreeStr*: _GenTreeIterDepthCreateStatic, \
+  const GenTreeStr*: _GenTreeIterDepthCreateStatic, \
+  default: PBErrInvalidPolymorphism) ((GenTree*)(Tree))
 
-#define GTreeIterBreadthCreate(Tree) _Generic(Tree, \
-  GTree*: _GTreeIterBreadthCreate, \
-  const GTree*: _GTreeIterBreadthCreate, \
-  GTreeStr*: _GTreeIterBreadthCreate, \
-  const GTreeStr*: _GTreeIterBreadthCreate, \
-  default: PBErrInvalidPolymorphism) ((GTree*)(Tree))
+#define GenTreeIterBreadthCreate(Tree) _Generic(Tree, \
+  GenTree*: _GenTreeIterBreadthCreate, \
+  const GenTree*: _GenTreeIterBreadthCreate, \
+  GenTreeStr*: _GenTreeIterBreadthCreate, \
+  const GenTreeStr*: _GenTreeIterBreadthCreate, \
+  default: PBErrInvalidPolymorphism) ((GenTree*)(Tree))
 
-#define GTreeIterBreadthCreateStatic(Tree) _Generic(Tree, \
-  GTree*: _GTreeIterBreadthCreateStatic, \
-  const GTree*: _GTreeIterBreadthCreateStatic, \
-  GTreeStr*: _GTreeIterBreadthCreateStatic, \
-  const GTreeStr*: _GTreeIterBreadthCreateStatic, \
-  default: PBErrInvalidPolymorphism) ((GTree*)(Tree))
+#define GenTreeIterBreadthCreateStatic(Tree) _Generic(Tree, \
+  GenTree*: _GenTreeIterBreadthCreateStatic, \
+  const GenTree*: _GenTreeIterBreadthCreateStatic, \
+  GenTreeStr*: _GenTreeIterBreadthCreateStatic, \
+  const GenTreeStr*: _GenTreeIterBreadthCreateStatic, \
+  default: PBErrInvalidPolymorphism) ((GenTree*)(Tree))
 
-#define GTreeIterValueCreate(Tree) _Generic(Tree, \
-  GTree*: _GTreeIterValueCreate, \
-  const GTree*: _GTreeIterValueCreate, \
-  GTreeStr*: _GTreeIterValueCreate, \
-  const GTreeStr*: _GTreeIterValueCreate, \
-  default: PBErrInvalidPolymorphism) ((GTree*)(Tree))
+#define GenTreeIterValueCreate(Tree) _Generic(Tree, \
+  GenTree*: _GenTreeIterValueCreate, \
+  const GenTree*: _GenTreeIterValueCreate, \
+  GenTreeStr*: _GenTreeIterValueCreate, \
+  const GenTreeStr*: _GenTreeIterValueCreate, \
+  default: PBErrInvalidPolymorphism) ((GenTree*)(Tree))
 
-#define GTreeIterValueCreateStatic(Tree) _Generic(Tree, \
-  GTree*: _GTreeIterValueCreateStatic, \
-  const GTree*: _GTreeIterValueCreateStatic, \
-  GTreeStr*: _GTreeIterValueCreateStatic, \
-  const GTreeStr*: _GTreeIterValueCreateStatic, \
-  default: PBErrInvalidPolymorphism) ((GTree*)(Tree))
+#define GenTreeIterValueCreateStatic(Tree) _Generic(Tree, \
+  GenTree*: _GenTreeIterValueCreateStatic, \
+  const GenTree*: _GenTreeIterValueCreateStatic, \
+  GenTreeStr*: _GenTreeIterValueCreateStatic, \
+  const GenTreeStr*: _GenTreeIterValueCreateStatic, \
+  default: PBErrInvalidPolymorphism) ((GenTree*)(Tree))
 
-#define GTreeIterFree(RefIter) _Generic(RefIter, \
-  GTreeIter**: _GTreeIterFree, \
-  GTreeIterDepth**: _GTreeIterFree, \
-  GTreeIterBreadth**: _GTreeIterFree, \
-  GTreeIterValue**: _GTreeIterFree, \
-  default: PBErrInvalidPolymorphism) ((GTreeIter**)(RefIter))
+#define GenTreeIterFree(RefIter) _Generic(RefIter, \
+  GenTreeIter**: _GenTreeIterFree, \
+  GenTreeIterDepth**: _GenTreeIterFree, \
+  GenTreeIterBreadth**: _GenTreeIterFree, \
+  GenTreeIterValue**: _GenTreeIterFree, \
+  default: PBErrInvalidPolymorphism) ((GenTreeIter**)(RefIter))
 
-#define GTreeIterFreeStatic(Iter) _Generic(Iter, \
-  GTreeIter*: _GTreeIterFreeStatic, \
-  GTreeIterDepth*: _GTreeIterFreeStatic, \
-  GTreeIterBreadth*: _GTreeIterFreeStatic, \
-  GTreeIterValue*: _GTreeIterFreeStatic, \
-  default: PBErrInvalidPolymorphism) ((GTreeIter*)(Iter))
+#define GenTreeIterFreeStatic(Iter) _Generic(Iter, \
+  GenTreeIter*: _GenTreeIterFreeStatic, \
+  GenTreeIterDepth*: _GenTreeIterFreeStatic, \
+  GenTreeIterBreadth*: _GenTreeIterFreeStatic, \
+  GenTreeIterValue*: _GenTreeIterFreeStatic, \
+  default: PBErrInvalidPolymorphism) ((GenTreeIter*)(Iter))
 
-#define GTreeIterReset(Iter) _Generic(Iter, \
-  GTreeIter*: _GTreeIterReset, \
-  GTreeIterDepth*: _GTreeIterReset, \
-  GTreeIterBreadth*: _GTreeIterReset, \
-  GTreeIterValue*: _GTreeIterReset, \
-  default: PBErrInvalidPolymorphism) ((GTreeIter*)(Iter))
+#define GenTreeIterReset(Iter) _Generic(Iter, \
+  GenTreeIter*: _GenTreeIterReset, \
+  GenTreeIterDepth*: _GenTreeIterReset, \
+  GenTreeIterBreadth*: _GenTreeIterReset, \
+  GenTreeIterValue*: _GenTreeIterReset, \
+  default: PBErrInvalidPolymorphism) ((GenTreeIter*)(Iter))
 
-#define GTreeIterToEnd(Iter) _Generic(Iter, \
-  GTreeIter*: _GTreeIterToEnd, \
-  GTreeIterDepth*: _GTreeIterToEnd, \
-  GTreeIterBreadth*: _GTreeIterToEnd, \
-  GTreeIterValue*: _GTreeIterToEnd, \
-  default: PBErrInvalidPolymorphism) ((GTreeIter*)(Iter))
+#define GenTreeIterToEnd(Iter) _Generic(Iter, \
+  GenTreeIter*: _GenTreeIterToEnd, \
+  GenTreeIterDepth*: _GenTreeIterToEnd, \
+  GenTreeIterBreadth*: _GenTreeIterToEnd, \
+  GenTreeIterValue*: _GenTreeIterToEnd, \
+  default: PBErrInvalidPolymorphism) ((GenTreeIter*)(Iter))
 
-#define GTreeIterStep(Iter) _Generic(Iter, \
-  GTreeIter*: _GTreeIterStep, \
-  GTreeIterDepth*: _GTreeIterStep, \
-  GTreeIterBreadth*: _GTreeIterStep, \
-  GTreeIterValue*: _GTreeIterStep, \
-  default: PBErrInvalidPolymorphism) ((GTreeIter*)(Iter))
+#define GenTreeIterStep(Iter) _Generic(Iter, \
+  GenTreeIter*: _GenTreeIterStep, \
+  GenTreeIterDepth*: _GenTreeIterStep, \
+  GenTreeIterBreadth*: _GenTreeIterStep, \
+  GenTreeIterValue*: _GenTreeIterStep, \
+  default: PBErrInvalidPolymorphism) ((GenTreeIter*)(Iter))
 
-#define GTreeIterStepBack(Iter) _Generic(Iter, \
-  GTreeIter*: _GTreeIterStepBack, \
-  GTreeIterDepth*: _GTreeIterStepBack, \
-  GTreeIterBreadth*: _GTreeIterStepBack, \
-  GTreeIterValue*: _GTreeIterStepBack, \
-  default: PBErrInvalidPolymorphism) ((GTreeIter*)(Iter))
+#define GenTreeIterStepBack(Iter) _Generic(Iter, \
+  GenTreeIter*: _GenTreeIterStepBack, \
+  GenTreeIterDepth*: _GenTreeIterStepBack, \
+  GenTreeIterBreadth*: _GenTreeIterStepBack, \
+  GenTreeIterValue*: _GenTreeIterStepBack, \
+  default: PBErrInvalidPolymorphism) ((GenTreeIter*)(Iter))
 
-#define GTreeIterApply(Iter, Fun, Param) _Generic(Iter, \
-  GTreeIter*: _GTreeIterApply, \
-  GTreeIterDepth*: _GTreeIterApply, \
-  GTreeIterBreadth*: _GTreeIterApply, \
-  GTreeIterValue*: _GTreeIterApply, \
-  default: PBErrInvalidPolymorphism) ((GTreeIter*)(Iter), Fun, Param)
+#define GenTreeIterApply(Iter, Fun, Param) _Generic(Iter, \
+  GenTreeIter*: _GenTreeIterApply, \
+  GenTreeIterDepth*: _GenTreeIterApply, \
+  GenTreeIterBreadth*: _GenTreeIterApply, \
+  GenTreeIterValue*: _GenTreeIterApply, \
+  default: PBErrInvalidPolymorphism) ((GenTreeIter*)(Iter), Fun, Param)
 
-#define GTreeIterIsFirst(Iter) _Generic(Iter, \
-  GTreeIter*: _GTreeIterIsFirst, \
-  const GTreeIter*: _GTreeIterIsFirst, \
-  GTreeIterDepth*: _GTreeIterIsFirst, \
-  const GTreeIterDepth*: _GTreeIterIsFirst, \
-  GTreeIterBreadth*: _GTreeIterIsFirst, \
-  const GTreeIterBreadth*: _GTreeIterIsFirst, \
-  GTreeIterValue*: _GTreeIterIsFirst, \
-  const GTreeIterValue*: _GTreeIterIsFirst, \
-  default: PBErrInvalidPolymorphism) ((GTreeIter*)(Iter))
+#define GenTreeIterIsFirst(Iter) _Generic(Iter, \
+  GenTreeIter*: _GenTreeIterIsFirst, \
+  const GenTreeIter*: _GenTreeIterIsFirst, \
+  GenTreeIterDepth*: _GenTreeIterIsFirst, \
+  const GenTreeIterDepth*: _GenTreeIterIsFirst, \
+  GenTreeIterBreadth*: _GenTreeIterIsFirst, \
+  const GenTreeIterBreadth*: _GenTreeIterIsFirst, \
+  GenTreeIterValue*: _GenTreeIterIsFirst, \
+  const GenTreeIterValue*: _GenTreeIterIsFirst, \
+  default: PBErrInvalidPolymorphism) ((GenTreeIter*)(Iter))
 
-#define GTreeIterIsLast(Iter) _Generic(Iter, \
-  GTreeIter*: _GTreeIterIsLast, \
-  const GTreeIter*: _GTreeIterIsLast, \
-  GTreeIterDepth*: _GTreeIterIsLast, \
-  const GTreeIterDepth*: _GTreeIterIsLast, \
-  GTreeIterBreadth*: _GTreeIterIsLast, \
-  const GTreeIterBreadth*: _GTreeIterIsLast, \
-  GTreeIterValue*: _GTreeIterIsLast, \
-  const GTreeIterValue*: _GTreeIterIsLast, \
-  default: PBErrInvalidPolymorphism) ((GTreeIter*)(Iter))
+#define GenTreeIterIsLast(Iter) _Generic(Iter, \
+  GenTreeIter*: _GenTreeIterIsLast, \
+  const GenTreeIter*: _GenTreeIterIsLast, \
+  GenTreeIterDepth*: _GenTreeIterIsLast, \
+  const GenTreeIterDepth*: _GenTreeIterIsLast, \
+  GenTreeIterBreadth*: _GenTreeIterIsLast, \
+  const GenTreeIterBreadth*: _GenTreeIterIsLast, \
+  GenTreeIterValue*: _GenTreeIterIsLast, \
+  const GenTreeIterValue*: _GenTreeIterIsLast, \
+  default: PBErrInvalidPolymorphism) ((GenTreeIter*)(Iter))
 
-#define GTreeIterSetGTree(Iter, Tree) _Generic(Iter, \
-  GTreeIterDepth*: _GTreeIterDepthSetGTree, \
-  GTreeIterBreadth*: _GTreeIterBreadthSetGTree, \
-  GTreeIterValue*: _GTreeIterValueSetGTree, \
+#define GenTreeIterSetGenTree(Iter, Tree) _Generic(Iter, \
+  GenTreeIterDepth*: _GenTreeIterDepthSetGenTree, \
+  GenTreeIterBreadth*: _GenTreeIterBreadthSetGenTree, \
+  GenTreeIterValue*: _GenTreeIterValueSetGenTree, \
   default: PBErrInvalidPolymorphism) (Iter, Tree)
 
-#define GTreeIterGetData(Iter) _Generic(Iter, \
-  GTreeIter*: _GTreeIterGetData, \
-  const GTreeIter*: _GTreeIterGetData, \
-  GTreeIterDepth*: _GTreeIterGetData, \
-  const GTreeIterDepth*: _GTreeIterGetData, \
-  GTreeIterBreadth*: _GTreeIterGetData, \
-  const GTreeIterBreadth*: _GTreeIterGetData, \
-  GTreeIterValue*: _GTreeIterGetData, \
-  const GTreeIterValue*: _GTreeIterGetData, \
-  default: PBErrInvalidPolymorphism) ((GTreeIter*)(Iter))
+#define GenTreeIterGetData(Iter) _Generic(Iter, \
+  GenTreeIter*: _GenTreeIterGetData, \
+  const GenTreeIter*: _GenTreeIterGetData, \
+  GenTreeIterDepth*: _GenTreeIterGetData, \
+  const GenTreeIterDepth*: _GenTreeIterGetData, \
+  GenTreeIterBreadth*: _GenTreeIterGetData, \
+  const GenTreeIterBreadth*: _GenTreeIterGetData, \
+  GenTreeIterValue*: _GenTreeIterGetData, \
+  const GenTreeIterValue*: _GenTreeIterGetData, \
+  default: PBErrInvalidPolymorphism) ((GenTreeIter*)(Iter))
 
-#define GTreeIterGTree(Iter) _Generic(Iter, \
-  GTreeIter*: _GTreeIterGTree, \
-  const GTreeIter*: _GTreeIterGTree, \
-  GTreeIterDepth*: _GTreeIterGTree, \
-  const GTreeIterDepth*: _GTreeIterGTree, \
-  GTreeIterBreadth*: _GTreeIterGTree, \
-  const GTreeIterBreadth*: _GTreeIterGTree, \
-  GTreeIterValue*: _GTreeIterGTree, \
-  const GTreeIterValue*: _GTreeIterGTree, \
-  default: PBErrInvalidPolymorphism) ((GTreeIter*)(Iter))
+#define GenTreeIterGenTree(Iter) _Generic(Iter, \
+  GenTreeIter*: _GenTreeIterGenTree, \
+  const GenTreeIter*: _GenTreeIterGenTree, \
+  GenTreeIterDepth*: _GenTreeIterGenTree, \
+  const GenTreeIterDepth*: _GenTreeIterGenTree, \
+  GenTreeIterBreadth*: _GenTreeIterGenTree, \
+  const GenTreeIterBreadth*: _GenTreeIterGenTree, \
+  GenTreeIterValue*: _GenTreeIterGenTree, \
+  const GenTreeIterValue*: _GenTreeIterGenTree, \
+  default: PBErrInvalidPolymorphism) ((GenTreeIter*)(Iter))
 
-#define GTreeIterGetGTree(Iter) _Generic(Iter, \
-  GTreeIter*: _GTreeIterGetGTree, \
-  const GTreeIter*: _GTreeIterGetGTree, \
-  GTreeIterDepth*: _GTreeIterGetGTree, \
-  const GTreeIterDepth*: _GTreeIterGetGTree, \
-  GTreeIterBreadth*: _GTreeIterGetGTree, \
-  const GTreeIterBreadth*: _GTreeIterGetGTree, \
-  GTreeIterValue*: _GTreeIterGetGTree, \
-  const GTreeIterValue*: _GTreeIterGetGTree, \
-  default: PBErrInvalidPolymorphism) ((GTreeIter*)(Iter))
+#define GenTreeIterGetGenTree(Iter) _Generic(Iter, \
+  GenTreeIter*: _GenTreeIterGetGenTree, \
+  const GenTreeIter*: _GenTreeIterGetGenTree, \
+  GenTreeIterDepth*: _GenTreeIterGetGenTree, \
+  const GenTreeIterDepth*: _GenTreeIterGetGenTree, \
+  GenTreeIterBreadth*: _GenTreeIterGetGenTree, \
+  const GenTreeIterBreadth*: _GenTreeIterGetGenTree, \
+  GenTreeIterValue*: _GenTreeIterGetGenTree, \
+  const GenTreeIterValue*: _GenTreeIterGetGenTree, \
+  default: PBErrInvalidPolymorphism) ((GenTreeIter*)(Iter))
 
-#define GTreeIterSeq(Iter) _Generic(Iter, \
-  GTreeIter*: _GTreeIterSeq, \
-  const GTreeIter*: _GTreeIterSeq, \
-  GTreeIterDepth*: _GTreeIterSeq, \
-  const GTreeIterDepth*: _GTreeIterSeq, \
-  GTreeIterBreadth*: _GTreeIterSeq, \
-  const GTreeIterBreadth*: _GTreeIterSeq, \
-  GTreeIterValue*: _GTreeIterSeq, \
-  const GTreeIterValue*: _GTreeIterSeq, \
-  default: PBErrInvalidPolymorphism) ((GTreeIter*)(Iter))
+#define GenTreeIterSeq(Iter) _Generic(Iter, \
+  GenTreeIter*: _GenTreeIterSeq, \
+  const GenTreeIter*: _GenTreeIterSeq, \
+  GenTreeIterDepth*: _GenTreeIterSeq, \
+  const GenTreeIterDepth*: _GenTreeIterSeq, \
+  GenTreeIterBreadth*: _GenTreeIterSeq, \
+  const GenTreeIterBreadth*: _GenTreeIterSeq, \
+  GenTreeIterValue*: _GenTreeIterSeq, \
+  const GenTreeIterValue*: _GenTreeIterSeq, \
+  default: PBErrInvalidPolymorphism) ((GenTreeIter*)(Iter))
 
 // ================ Inliner ====================
 

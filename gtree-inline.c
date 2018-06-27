@@ -4,14 +4,14 @@
 
 // ================ Functions implementation ====================
 
-// Get the user data of the GTree 'that'
+// Get the user data of the GenTree 'that'
 #if BUILDMODE != 0
 inline
 #endif
-void* _GTreeData(const GTree* const that) {
+void* _GenTreeData(const GenTree* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
-    GTreeErr->_type = PBErrTypeNullPointer;
+    GenTreeErr->_type = PBErrTypeNullPointer;
     sprintf(GSetErr->_msg, "'that' is null");
     PBErrCatch(GSetErr);
   }
@@ -19,14 +19,14 @@ void* _GTreeData(const GTree* const that) {
   return that->_data;
 }
 
-// Get the parent of the GTree 'that'
+// Get the parent of the GenTree 'that'
 #if BUILDMODE != 0
 inline
 #endif
-GTree* _GTreeParent(const GTree* const that) {
+GenTree* _GenTreeParent(const GenTree* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
-    GTreeErr->_type = PBErrTypeNullPointer;
+    GenTreeErr->_type = PBErrTypeNullPointer;
     sprintf(GSetErr->_msg, "'that' is null");
     PBErrCatch(GSetErr);
   }
@@ -34,14 +34,14 @@ GTree* _GTreeParent(const GTree* const that) {
   return that->_parent;
 }
 
-// Set the user data of the GTree 'that' to 'data'
+// Set the user data of the GenTree 'that' to 'data'
 #if BUILDMODE != 0
 inline
 #endif
-void _GTreeSetData(GTree* const that, void* const data) {
+void _GenTreeSetData(GenTree* const that, void* const data) {
 #if BUILDMODE == 0
   if (that == NULL) {
-    GTreeErr->_type = PBErrTypeNullPointer;
+    GenTreeErr->_type = PBErrTypeNullPointer;
     sprintf(GSetErr->_msg, "'that' is null");
     PBErrCatch(GSetErr);
   }
@@ -49,30 +49,30 @@ void _GTreeSetData(GTree* const that, void* const data) {
   that->_data = data;
 }
 
-// Get the set of subtrees of the GTree 'that'
+// Get the set of subtrees of the GenTree 'that'
 #if BUILDMODE != 0
 inline
 #endif
-GSetGTree* _GTreeSubtrees(const GTree* const that) {
+GSetGenTree* _GenTreeSubtrees(const GenTree* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
-    GTreeErr->_type = PBErrTypeNullPointer;
+    GenTreeErr->_type = PBErrTypeNullPointer;
     sprintf(GSetErr->_msg, "'that' is null");
     PBErrCatch(GSetErr);
   }
 #endif
-  return (GSetGTree*)&(that->_subtrees);
+  return (GSetGenTree*)&(that->_subtrees);
 }
 
-// Return true if the GTree 'that' is a root
+// Return true if the GenTree 'that' is a root
 // Return false else
 #if BUILDMODE != 0
 inline
 #endif
-bool _GTreeIsRoot(const GTree* const that) {
+bool _GenTreeIsRoot(const GenTree* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
-    GTreeErr->_type = PBErrTypeNullPointer;
+    GenTreeErr->_type = PBErrTypeNullPointer;
     sprintf(GSetErr->_msg, "'that' is null");
     PBErrCatch(GSetErr);
   }
@@ -80,15 +80,15 @@ bool _GTreeIsRoot(const GTree* const that) {
   return (that->_parent == NULL ? true : false);
 }
 
-// Return true if the GTree 'that' is a leaf
+// Return true if the GenTree 'that' is a leaf
 // Return false else
 #if BUILDMODE != 0
 inline
 #endif
-bool _GTreeIsLeaf(const GTree* const that) {
+bool _GenTreeIsLeaf(const GenTree* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
-    GTreeErr->_type = PBErrTypeNullPointer;
+    GenTreeErr->_type = PBErrTypeNullPointer;
     sprintf(GSetErr->_msg, "'that' is null");
     PBErrCatch(GSetErr);
   }
@@ -96,7 +96,7 @@ bool _GTreeIsLeaf(const GTree* const that) {
   return (GSetNbElem(&(that->_subtrees)) == 0 ? true : false);
 }
 
-// ----------- GTreeIter
+// ----------- GenTreeIter
 
 // ================ Functions declaration ====================
 
@@ -106,10 +106,10 @@ bool _GTreeIsLeaf(const GTree* const that) {
 #if BUILDMODE != 0
 inline
 #endif 
-void _GTreeIterReset(GTreeIter* const that) {
+void _GenTreeIterReset(GenTreeIter* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
-    GTreeErr->_type = PBErrTypeNullPointer;
+    GenTreeErr->_type = PBErrTypeNullPointer;
     sprintf(GSetErr->_msg, "'that' is null");
     PBErrCatch(GSetErr);
   }
@@ -121,10 +121,10 @@ void _GTreeIterReset(GTreeIter* const that) {
 #if BUILDMODE != 0
 inline
 #endif 
-void _GTreeIterToEnd(GTreeIter* const that) {
+void _GenTreeIterToEnd(GenTreeIter* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
-    GTreeErr->_type = PBErrTypeNullPointer;
+    GenTreeErr->_type = PBErrTypeNullPointer;
     sprintf(GSetErr->_msg, "'that' is null");
     PBErrCatch(GSetErr);
   }
@@ -138,15 +138,15 @@ void _GTreeIterToEnd(GTreeIter* const that) {
 #if BUILDMODE != 0
 inline
 #endif 
-bool _GTreeIterStep(GTreeIter* const that) {
+bool _GenTreeIterStep(GenTreeIter* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
-    GTreeErr->_type = PBErrTypeNullPointer;
+    GenTreeErr->_type = PBErrTypeNullPointer;
     sprintf(GSetErr->_msg, "'that' is null");
     PBErrCatch(GSetErr);
   }
   if (that->_curPos == NULL) {
-    GTreeErr->_type = PBErrTypeInvalidArg;
+    GenTreeErr->_type = PBErrTypeInvalidArg;
     sprintf(GSetErr->_msg, "'that->_curPos' is null");
     PBErrCatch(GSetErr);
   }
@@ -164,15 +164,15 @@ bool _GTreeIterStep(GTreeIter* const that) {
 #if BUILDMODE != 0
 inline
 #endif 
-bool _GTreeIterStepBack(GTreeIter* const that) {
+bool _GenTreeIterStepBack(GenTreeIter* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
-    GTreeErr->_type = PBErrTypeNullPointer;
+    GenTreeErr->_type = PBErrTypeNullPointer;
     sprintf(GSetErr->_msg, "'that' is null");
     PBErrCatch(GSetErr);
   }
   if (that->_curPos == NULL) {
-    GTreeErr->_type = PBErrTypeInvalidArg;
+    GenTreeErr->_type = PBErrTypeInvalidArg;
     sprintf(GSetErr->_msg, "'that->_curPos' is null");
     PBErrCatch(GSetErr);
   }
@@ -184,7 +184,7 @@ bool _GTreeIterStepBack(GTreeIter* const that) {
   return false;
 }
 
-// Apply a function to all elements' data of the GTree of the iterator
+// Apply a function to all elements' data of the GenTree of the iterator
 // The iterator is first reset, then the function is apply sequencially
 // using the Step function of the iterator
 // The applied function takes to void* arguments: 'data' is the _data
@@ -193,42 +193,42 @@ bool _GTreeIterStepBack(GTreeIter* const that) {
 #if BUILDMODE != 0
 inline
 #endif 
-void _GTreeIterApply(GTreeIter* const that, 
+void _GenTreeIterApply(GenTreeIter* const that, 
   void(*fun)(void* const data, void* const param), void* const param) {
 #if BUILDMODE == 0
   if (that == NULL) {
-    GTreeErr->_type = PBErrTypeNullPointer;
+    GenTreeErr->_type = PBErrTypeNullPointer;
     sprintf(GSetErr->_msg, "'that' is null");
     PBErrCatch(GSetErr);
   }
   if (fun == NULL) {
-    GTreeErr->_type = PBErrTypeNullPointer;
+    GenTreeErr->_type = PBErrTypeNullPointer;
     sprintf(GSetErr->_msg, "'fun' is null");
     PBErrCatch(GSetErr);
   }
 #endif
   // Reset the iterator;
-  GTreeIterReset(that);
+  GenTreeIterReset(that);
   // If the associated tree is not empty
   if (GSetNbElem(&(that->_seq)) > 0) {
     // For each node of the tree
     do {
       // Apply the user function
-      fun(GTreeIterGetData(that), param);
-    } while (GTreeIterStep(that));
+      fun(GenTreeIterGetData(that), param);
+    } while (GenTreeIterStep(that));
   }
 }
 
 // Return true if the iterator is at the start of the elements (from
-// its point of view, not the order in the GTree)
+// its point of view, not the order in the GenTree)
 // Return false else
 #if BUILDMODE != 0
 inline
 #endif 
-bool _GTreeIterIsFirst(const GTreeIter* const that) {
+bool _GenTreeIterIsFirst(const GenTreeIter* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
-    GTreeErr->_type = PBErrTypeNullPointer;
+    GenTreeErr->_type = PBErrTypeNullPointer;
     sprintf(GSetErr->_msg, "'that' is null");
     PBErrCatch(GSetErr);
   }
@@ -237,15 +237,15 @@ bool _GTreeIterIsFirst(const GTreeIter* const that) {
 }
 
 // Return true if the iterator is at the end of the elements (from
-// its point of view, not the order in the GTree)
+// its point of view, not the order in the GenTree)
 // Return false else
 #if BUILDMODE != 0
 inline
 #endif 
-bool _GTreeIterIsLast(const GTreeIter* const that) {
+bool _GenTreeIterIsLast(const GenTreeIter* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
-    GTreeErr->_type = PBErrTypeNullPointer;
+    GenTreeErr->_type = PBErrTypeNullPointer;
     sprintf(GSetErr->_msg, "'that' is null");
     PBErrCatch(GSetErr);
   }
@@ -257,119 +257,119 @@ bool _GTreeIterIsLast(const GTreeIter* const that) {
 #if BUILDMODE != 0
 inline
 #endif 
-void _GTreeIterDepthSetGTree(GTreeIterDepth* const that, 
-  GTree* const tree) {
+void _GenTreeIterDepthSetGenTree(GenTreeIterDepth* const that, 
+  GenTree* const tree) {
 #if BUILDMODE == 0
   if (that == NULL) {
-    GTreeErr->_type = PBErrTypeNullPointer;
+    GenTreeErr->_type = PBErrTypeNullPointer;
     sprintf(GSetErr->_msg, "'that' is null");
     PBErrCatch(GSetErr);
   }
   if (tree == NULL) {
-    GTreeErr->_type = PBErrTypeNullPointer;
+    GenTreeErr->_type = PBErrTypeNullPointer;
     sprintf(GSetErr->_msg, "'tree' is null");
     PBErrCatch(GSetErr);
   }
 #endif
   // Set the tree
-  ((GTreeIter*)that)->_tree = tree;
+  ((GenTreeIter*)that)->_tree = tree;
   // Update the sequence
-  GTreeIterDepthUpdate(that);
+  GenTreeIterDepthUpdate(that);
   // Reset the iterator
-  GTreeIterReset(that);
+  GenTreeIterReset(that);
 }
 #if BUILDMODE != 0
 inline
 #endif 
-void _GTreeIterBreadthSetGTree(GTreeIterBreadth* const that, 
-  GTree* tree) {
+void _GenTreeIterBreadthSetGenTree(GenTreeIterBreadth* const that, 
+  GenTree* tree) {
 #if BUILDMODE == 0
   if (that == NULL) {
-    GTreeErr->_type = PBErrTypeNullPointer;
+    GenTreeErr->_type = PBErrTypeNullPointer;
     sprintf(GSetErr->_msg, "'that' is null");
     PBErrCatch(GSetErr);
   }
   if (tree == NULL) {
-    GTreeErr->_type = PBErrTypeNullPointer;
+    GenTreeErr->_type = PBErrTypeNullPointer;
     sprintf(GSetErr->_msg, "'tree' is null");
     PBErrCatch(GSetErr);
   }
 #endif
   // Set the tree
-  ((GTreeIter*)that)->_tree = tree;
+  ((GenTreeIter*)that)->_tree = tree;
   // Update the sequence
-  GTreeIterBreadthUpdate(that);
+  GenTreeIterBreadthUpdate(that);
   // Reset the iterator
-  GTreeIterReset(that);
+  GenTreeIterReset(that);
 }
 #if BUILDMODE != 0
 inline
 #endif 
-void _GTreeIterValueSetGTree(GTreeIterValue* const that, 
-  GTree* const tree) {
+void _GenTreeIterValueSetGenTree(GenTreeIterValue* const that, 
+  GenTree* const tree) {
 #if BUILDMODE == 0
   if (that == NULL) {
-    GTreeErr->_type = PBErrTypeNullPointer;
+    GenTreeErr->_type = PBErrTypeNullPointer;
     sprintf(GSetErr->_msg, "'that' is null");
     PBErrCatch(GSetErr);
   }
   if (tree == NULL) {
-    GTreeErr->_type = PBErrTypeNullPointer;
+    GenTreeErr->_type = PBErrTypeNullPointer;
     sprintf(GSetErr->_msg, "'tree' is null");
     PBErrCatch(GSetErr);
   }
 #endif
   // Set the tree
-  ((GTreeIter*)that)->_tree = tree;
+  ((GenTreeIter*)that)->_tree = tree;
   // Update the sequence
-  GTreeIterValueUpdate(that);
+  GenTreeIterValueUpdate(that);
   // Reset the iterator
-  GTreeIterReset(that);
+  GenTreeIterReset(that);
 }
 
 // Return the user data of the tree currently pointed to by the iterator
 #if BUILDMODE != 0
 inline
 #endif 
-void* _GTreeIterGetData(const GTreeIter* const that) {
+void* _GenTreeIterGetData(const GenTreeIter* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
-    GTreeErr->_type = PBErrTypeNullPointer;
+    GenTreeErr->_type = PBErrTypeNullPointer;
     sprintf(GSetErr->_msg, "'that' is null");
     PBErrCatch(GSetErr);
   }
   if (that->_curPos == NULL) {
-    GTreeErr->_type = PBErrTypeInvalidArg;
+    GenTreeErr->_type = PBErrTypeInvalidArg;
     sprintf(GSetErr->_msg, "'that->_curPos' is null");
     PBErrCatch(GSetErr);
   }
 #endif
-  return ((GTree*)(that->_curPos->_data))->_data;
+  return ((GenTree*)(that->_curPos->_data))->_data;
 }
 
 // Return the tree currently pointed to by the iterator
 #if BUILDMODE != 0
 inline
 #endif 
-GTree* _GTreeIterGetGTree(const GTreeIter* const that) {
+GenTree* _GenTreeIterGetGenTree(const GenTreeIter* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
-    GTreeErr->_type = PBErrTypeNullPointer;
+    GenTreeErr->_type = PBErrTypeNullPointer;
     sprintf(GSetErr->_msg, "'that' is null");
     PBErrCatch(GSetErr);
   }
 #endif
-  return (GTree*)(that->_curPos->_data);
+  return (GenTree*)(that->_curPos->_data);
 }
 
 // Return the tree associated to the iterator 'that'
 #if BUILDMODE != 0
 inline
 #endif 
-GTree* _GTreeIterGTree(const GTreeIter* const that) {
+GenTree* _GenTreeIterGenTree(const GenTreeIter* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
-    GTreeErr->_type = PBErrTypeNullPointer;
+    GenTreeErr->_type = PBErrTypeNullPointer;
     sprintf(GSetErr->_msg, "'that' is null");
     PBErrCatch(GSetErr);
   }
@@ -381,14 +381,14 @@ GTree* _GTreeIterGTree(const GTreeIter* const that) {
 #if BUILDMODE != 0
 inline
 #endif 
-GSetGTree* _GTreeIterSeq(const GTreeIter* const that) {
+GSetGenTree* _GenTreeIterSeq(const GenTreeIter* const that) {
 #if BUILDMODE == 0
   if (that == NULL) {
-    GTreeErr->_type = PBErrTypeNullPointer;
+    GenTreeErr->_type = PBErrTypeNullPointer;
     sprintf(GSetErr->_msg, "'that' is null");
     PBErrCatch(GSetErr);
   }
 #endif
-  return (GSetGTree*)&(that->_seq);
+  return (GSetGenTree*)&(that->_seq);
 }
 
