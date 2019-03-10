@@ -1,12 +1,13 @@
-UnitTestGTreeCreateFree OK
-UnitTestGTreeGetSet OK
-UnitTestGTreeCutGetSize OK
-UnitTestGTree OK
+UnitTestGenTreeCreateFree OK
+UnitTestGenTreeGetSet OK
+UnitTestGenTreeCutGetSize OK
+UnitTestGenTreeSearchAppendToNode OK
+UnitTestGenTree OK
 0,1,2,9,3,6,8,5,7,4,
-UnitTestGTreeIterDepth OK
+UnitTestGenTreeIterDepth OK
 0,9,1,2,3,4,6,8,5,7,
-UnitTestGTreeIterBreadth OK
+UnitTestGenTreeIterBreadth OK
 0,1,2,3,4,5,6,7,8,9,
-UnitTestGTreeIterValue OK
-UnitTestGTreeIter OK
+UnitTestGenTreeIterValue OK
+UnitTestGenTreeIter OK
 UnitTestAll OK

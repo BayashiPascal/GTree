@@ -142,6 +142,74 @@ int _GenTreeGetSize(const GenTree* const that) {
   return nb;
 }
 
+// Append a new node with 'data' to the first node containing 'node'
+// in the GenTree 'that'
+// Uses the iterator 'iter' to search the node
+// Return true if we could find 'node', false else
+bool _GenTreeAppendToNode(GenTree* const that, 
+  void* const data, void* const node, GenTreeIter* const iter) {
+#if BUILDMODE == 0
+  if (that == NULL) {
+    GenTreeErr->_type = PBErrTypeNullPointer;
+    sprintf(GSetErr->_msg, "'that' is null");
+    PBErrCatch(GSetErr);
+  }
+  if (iter == NULL) {
+    GenTreeErr->_type = PBErrTypeNullPointer;
+    sprintf(GSetErr->_msg, "'iter' is null");
+    PBErrCatch(GSetErr);
+  }
+#endif
+  // Declare a variable to memorize the result
+  bool res = false;
+  // Search the node where to append the data
+  GenTree* nodeTree = GenTreeSearch(that, node, iter);
+  // If we could find the node
+  if (nodeTree != NULL) {
+    // Append the data
+    GenTreeAppendData(nodeTree, data);
+    // Update the result
+    res = true;
+  }
+  // Return the result
+  return res;
+}
+
+// Search the first node containing 'data' in the GenTree 'that'
+// Uses the iterator 'iter' to search the node. Do not reset the 
+// iterator, thus several calls with the same iterator will return 
+// eventual successive nodes containing the same data. If one want to 
+// loop on these nodes, the proper stopping condition is 
+// while(GenTreeSearch() != NULL && GenTreeIterIsLast() == false)
+// Return the node if we could find 'data', null else
+GenTree* _GenTreeSearch(const GenTree* const that, 
+  const void* const data, GenTreeIter* const iter) {
+#if BUILDMODE == 0
+  if (that == NULL) {
+    GenTreeErr->_type = PBErrTypeNullPointer;
+    sprintf(GSetErr->_msg, "'that' is null");
+    PBErrCatch(GSetErr);
+  } 
+  if (iter == NULL) {
+    GenTreeErr->_type = PBErrTypeNullPointer;
+    sprintf(GSetErr->_msg, "'iter' is null");
+    PBErrCatch(GSetErr);
+  }
+#endif
+  (void)that;
+  // Declare a variable to memorize the result
+  GenTree* res = NULL;
+  // Loop until we have found or reached the end
+  do {
+    // If we have found the searched data
+    if (GenTreeIterGetData(iter) == data)
+      // Memorize the node containing the data
+      res = GenTreeIterGetGenTree(iter);
+  } while (GenTreeIterStep(iter) && res == NULL);
+  // Return the result
+  return res;
+}
+
 // ----------- GenTreeIter
 
 // ================ Functions declaration ====================

@@ -126,10 +126,43 @@ void UnitTestGenTreeCutGetSize() {
   printf("UnitTestGenTreeCutGetSize OK\n");
 }
 
+void UnitTestGenTreeSearchAppendToNode() {
+  GenTree tree = GenTreeCreateStatic();
+  int data[4] = {1, 2, 3, 4};
+  GenTreeAppendData(&tree, data);
+  GenTreeAppendData(&tree, data + 1);
+  GenTreeAppendData(GenTreeSubtree(&tree, 1), data + 2);
+  GenTreeIterDepth iter = GenTreeIterDepthCreateStatic(&tree);
+  if (GenTreeSearch(&tree, data + 2, &iter) !=
+    GenTreeSubtree(GenTreeSubtree(&tree, 1), 0)) {
+    GenTreeErr->_type = PBErrTypeUnitTestFailed;
+    sprintf(GenTreeErr->_msg, "GenTreeSearch failed");
+    PBErrCatch(GenTreeErr);
+  }
+  GenTreeIterReset(&iter);
+  if (!GenTreeAppendToNode(&tree, data + 3, data + 1, &iter)) {
+    GenTreeErr->_type = PBErrTypeUnitTestFailed;
+    sprintf(GenTreeErr->_msg, "GenTreeAppendToNode failed");
+    PBErrCatch(GenTreeErr);
+  }
+  GenTreeIterFreeStatic(&iter);
+  iter = GenTreeIterDepthCreateStatic(&tree);
+  if (GenTreeSearch(&tree, data + 3, &iter) !=
+    GenTreeSubtree(GenTreeSubtree(&tree, 1), 1)) {
+    GenTreeErr->_type = PBErrTypeUnitTestFailed;
+    sprintf(GenTreeErr->_msg, "GenTreeAppendToNode failed");
+    PBErrCatch(GenTreeErr);
+  }
+  GenTreeIterFreeStatic(&iter);
+  GenTreeFreeStatic(&tree);
+  printf("UnitTestGenTreeSearchAppendToNode OK\n");
+}
+
 void UnitTestGenTree() {
   UnitTestGenTreeCreateFree();
   UnitTestGenTreeGetSet();
   UnitTestGenTreeCutGetSize();
+  UnitTestGenTreeSearchAppendToNode();
   printf("UnitTestGenTree OK\n");
 }
 

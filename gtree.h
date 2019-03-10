@@ -18,6 +18,7 @@
 // ================= Define ==================
 
 // ================= Data structure ===================
+
 struct GenTree;
 typedef struct GenTree {
   // Parent node
@@ -29,6 +30,8 @@ typedef struct GenTree {
   // User data
   void* _data;
 } GenTree;
+
+typedef struct GenTreeIter GenTreeIter;
 
 // ================ Functions declaration ====================
 
@@ -98,6 +101,23 @@ GenTree* _GenTreeParent(const GenTree* const that);
 // Return the number of subtrees of the GenTree 'that' and their subtrees 
 // recursively
 int _GenTreeGetSize(const GenTree* const that);
+
+// Append a new node with 'data' to the first node containing 'node'
+// in the GenTree 'that'
+// Uses the iterator 'iter' to search the node
+// Return true if we could find 'node', false else
+bool _GenTreeAppendToNode(GenTree* const that, 
+  void* const data, void* const node, GenTreeIter* const iter);
+
+// Search the first node containing 'data' in the GenTree 'that'
+// Uses the iterator 'iter' to search the node. Do not reset the 
+// iterator, thus several calls with the same iterator will return 
+// eventual successive nodes containing the same data. If one want to 
+// loop on these nodes, the proper stopping condition is 
+// while(GenTreeSearch() != NULL && GenTreeIterIsLast() == false)
+// Return the node if we could find 'data', null else
+GenTree* _GenTreeSearch(const GenTree* const that, 
+  const void* const data, GenTreeIter* const iter);
 
 // Wrapping of GSet functions
 inline GenTree* _GenTreeSubtree(const GenTree* const that, const int iSubtree) {
@@ -535,6 +555,20 @@ inline void _GenTreeStrAppendSubtree(GenTreeStr* const that,
   GenTreeStr*: _GenTreeStrAppendSubtree, \
   default: PBErrInvalidPolymorphism) (Tree, SubTree)
 
+#define GenTreeAppendToNode(Tree, Data, Node, Iter) _Generic(Tree, \
+  GenTree*: _GenTreeAppendToNode, \
+  GenTreeStr*: _GenTreeAppendToNode, \
+  default: PBErrInvalidPolymorphism) ((GenTree*)Tree, Data, Node, \
+    (GenTreeIter*)Iter)
+
+#define GenTreeSearch(Tree, Data, Iter) _Generic(Tree, \
+  GenTree*: _GenTreeSearch, \
+  const GenTree*: _GenTreeSearch, \
+  GenTreeStr*: _GenTreeSearch, \
+  const GenTreeStr*: _GenTreeSearch, \
+  default: PBErrInvalidPolymorphism) ((GenTree*)Tree, Data, \
+    (GenTreeIter*)Iter)
+
 #define GenTreeIterDepthCreate(Tree) _Generic(Tree, \
   GenTree*: _GenTreeIterDepthCreate, \
   const GenTree*: _GenTreeIterDepthCreate, \
@@ -697,6 +731,12 @@ inline void _GenTreeStrAppendSubtree(GenTreeStr* const that,
   GenTreeIterValue*: _GenTreeIterSeq, \
   const GenTreeIterValue*: _GenTreeIterSeq, \
   default: PBErrInvalidPolymorphism) ((GenTreeIter*)(Iter))
+
+#define GenTreeIterUpdate(Iter) _Generic(Iter, \
+  GenTreeIterDepth*: GenTreeIterDepthUpdate, \
+  GenTreeIterBreadth*: GenTreeIterBreadthUpdate, \
+  GenTreeIterValue*: GenTreeIterValueUpdate, \
+  default: PBErrInvalidPolymorphism) (Iter)
 
 // ================ Inliner ====================
 
