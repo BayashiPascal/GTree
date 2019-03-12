@@ -2,6 +2,7 @@ UnitTestGenTreeCreateFree OK
 UnitTestGenTreeGetSet OK
 UnitTestGenTreeCutGetSize OK
 UnitTestGenTreeSearchAppendToNode OK
+UnitTestGenTreeIsLastBrother OK
 UnitTestGenTree OK
 0,1,2,9,3,6,8,5,7,4,
 UnitTestGenTreeIterDepth OK

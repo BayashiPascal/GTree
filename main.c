@@ -158,11 +158,43 @@ void UnitTestGenTreeSearchAppendToNode() {
   printf("UnitTestGenTreeSearchAppendToNode OK\n");
 }
 
+void UnitTestGenTreeIsLastBrother() {
+  GenTree tree = GenTreeCreateStatic();
+  int data[4] = {1, 2, 3, 4};
+  GenTreeAppendData(&tree, data);
+  GenTreeAppendData(&tree, data + 1);
+  GenTreeAppendData(GenTreeSubtree(&tree, 1), data + 2);
+  if (GenTreeIsLastBrother(&tree) == false) {
+    GenTreeErr->_type = PBErrTypeUnitTestFailed;
+    sprintf(GenTreeErr->_msg, "GenTreeIsLastBrother failed");
+    PBErrCatch(GenTreeErr);
+  }
+  if (GenTreeIsLastBrother(GenTreeSubtree(&tree, 0)) == true) {
+    GenTreeErr->_type = PBErrTypeUnitTestFailed;
+    sprintf(GenTreeErr->_msg, "GenTreeIsLastBrother failed");
+    PBErrCatch(GenTreeErr);
+  }
+  if (GenTreeIsLastBrother(GenTreeSubtree(&tree, 1)) == false) {
+    GenTreeErr->_type = PBErrTypeUnitTestFailed;
+    sprintf(GenTreeErr->_msg, "GenTreeIsLastBrother failed");
+    PBErrCatch(GenTreeErr);
+  }
+  if (GenTreeIsLastBrother(
+    GenTreeSubtree(GenTreeSubtree(&tree, 1), 0)) == false) {
+    GenTreeErr->_type = PBErrTypeUnitTestFailed;
+    sprintf(GenTreeErr->_msg, "GenTreeIsLastBrother failed");
+    PBErrCatch(GenTreeErr);
+  }
+  GenTreeFreeStatic(&tree);
+  printf("UnitTestGenTreeIsLastBrother OK\n");
+}
+  
 void UnitTestGenTree() {
   UnitTestGenTreeCreateFree();
   UnitTestGenTreeGetSet();
   UnitTestGenTreeCutGetSize();
   UnitTestGenTreeSearchAppendToNode();
+  UnitTestGenTreeIsLastBrother();
   printf("UnitTestGenTree OK\n");
 }
 

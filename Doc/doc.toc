@@ -2,6 +2,6 @@
 \contentsline {section}{\numberline {2}Code}{14}
 \contentsline {subsection}{\numberline {2.1}gtree.c}{14}
 \contentsline {subsection}{\numberline {2.2}gtree-inline.c}{22}
-\contentsline {section}{\numberline {3}Makefile}{28}
+\contentsline {section}{\numberline {3}Makefile}{29}
 \contentsline {section}{\numberline {4}Unit tests}{29}
-\contentsline {section}{\numberline {5}Unit tests output}{39}
+\contentsline {section}{\numberline {5}Unit tests output}{40}

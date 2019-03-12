@@ -96,6 +96,26 @@ bool _GenTreeIsLeaf(const GenTree* const that) {
   return (GSetNbElem(&(that->_subtrees)) == 0 ? true : false);
 }
 
+// Return true if the GenTree 'that' is the last of its brotherhood
+// Return false else
+#if BUILDMODE != 0
+inline
+#endif
+bool _GenTreeIsLastBrother(const GenTree* const that) {
+#if BUILDMODE == 0
+  if (that == NULL) {
+    GenTreeErr->_type = PBErrTypeNullPointer;
+    sprintf(GSetErr->_msg, "'that' is null");
+    PBErrCatch(GSetErr);
+  }
+#endif
+  if (that->_parent == NULL)
+    return true;
+  else {
+    return (GSetTail(&(that->_parent->_subtrees)) == that);
+  }
+}
+
 // ----------- GenTreeIter
 
 // ================ Functions declaration ====================

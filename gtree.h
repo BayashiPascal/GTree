@@ -92,6 +92,13 @@ inline
 #endif
 bool _GenTreeIsLeaf(const GenTree* const that);
 
+// Return true if the GenTree 'that' is the last of its brotherhood
+// Return false else
+#if BUILDMODE != 0
+inline
+#endif
+bool _GenTreeIsLastBrother(const GenTree* const that);
+
 // Return the parent of the GenTree 'that'
 #if BUILDMODE != 0
 inline
@@ -470,6 +477,13 @@ inline void _GenTreeStrAppendSubtree(GenTreeStr* const that,
   const GenTree*: _GenTreeIsLeaf, \
   GenTreeStr*: _GenTreeIsLeaf, \
   const GenTreeStr*: _GenTreeIsLeaf, \
+  default: PBErrInvalidPolymorphism) ((GenTree*)(Tree))
+
+#define GenTreeIsLastBrother(Tree) _Generic(Tree, \
+  GenTree*: _GenTreeIsLastBrother, \
+  const GenTree*: _GenTreeIsLastBrother, \
+  GenTreeStr*: _GenTreeIsLastBrother, \
+  const GenTreeStr*: _GenTreeIsLastBrother, \
   default: PBErrInvalidPolymorphism) ((GenTree*)(Tree))
 
 #define GenTreeGetSize(Tree) _Generic(Tree, \
