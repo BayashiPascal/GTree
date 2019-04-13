@@ -378,6 +378,11 @@ GenTree* _GenTreeIterGetGenTree(const GenTreeIter* const that) {
     sprintf(GSetErr->_msg, "'that' is null");
     PBErrCatch(GSetErr);
   }
+  if (that->_curPos == NULL) {
+    GenTreeErr->_type = PBErrTypeInvalidArg;
+    sprintf(GSetErr->_msg, "'that->_curPos' is null");
+    PBErrCatch(GSetErr);
+  }
 #endif
   return (GenTree*)(that->_curPos->_data);
 }
