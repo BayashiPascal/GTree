@@ -1,4 +1,4 @@
-// ============ GTREE-INLINE.C ================
+// ============ GTREE-static inline.C ================
 
 // ================ Functions declaration ====================
 
@@ -6,7 +6,7 @@
 
 // Get the user data of the GenTree 'that'
 #if BUILDMODE != 0
-inline
+static inline
 #endif
 void* _GenTreeData(const GenTree* const that) {
 #if BUILDMODE == 0
@@ -21,7 +21,7 @@ void* _GenTreeData(const GenTree* const that) {
 
 // Get the parent of the GenTree 'that'
 #if BUILDMODE != 0
-inline
+static inline
 #endif
 GenTree* _GenTreeParent(const GenTree* const that) {
 #if BUILDMODE == 0
@@ -36,7 +36,7 @@ GenTree* _GenTreeParent(const GenTree* const that) {
 
 // Set the user data of the GenTree 'that' to 'data'
 #if BUILDMODE != 0
-inline
+static inline
 #endif
 void _GenTreeSetData(GenTree* const that, void* const data) {
 #if BUILDMODE == 0
@@ -51,7 +51,7 @@ void _GenTreeSetData(GenTree* const that, void* const data) {
 
 // Get the set of subtrees of the GenTree 'that'
 #if BUILDMODE != 0
-inline
+static inline
 #endif
 GSetGenTree* _GenTreeSubtrees(const GenTree* const that) {
 #if BUILDMODE == 0
@@ -67,7 +67,7 @@ GSetGenTree* _GenTreeSubtrees(const GenTree* const that) {
 // Return true if the GenTree 'that' is a root
 // Return false else
 #if BUILDMODE != 0
-inline
+static inline
 #endif
 bool _GenTreeIsRoot(const GenTree* const that) {
 #if BUILDMODE == 0
@@ -83,7 +83,7 @@ bool _GenTreeIsRoot(const GenTree* const that) {
 // Return true if the GenTree 'that' is a leaf
 // Return false else
 #if BUILDMODE != 0
-inline
+static inline
 #endif
 bool _GenTreeIsLeaf(const GenTree* const that) {
 #if BUILDMODE == 0
@@ -99,7 +99,7 @@ bool _GenTreeIsLeaf(const GenTree* const that) {
 // Return true if the GenTree 'that' is the last of its brotherhood
 // Return false else
 #if BUILDMODE != 0
-inline
+static inline
 #endif
 bool _GenTreeIsLastBrother(const GenTree* const that) {
 #if BUILDMODE == 0
@@ -124,7 +124,7 @@ bool _GenTreeIsLastBrother(const GenTree* const that) {
 
 // Reset the iterator 'that' at its start position
 #if BUILDMODE != 0
-inline
+static inline
 #endif 
 void _GenTreeIterReset(GenTreeIter* const that) {
 #if BUILDMODE == 0
@@ -139,7 +139,7 @@ void _GenTreeIterReset(GenTreeIter* const that) {
 
 // Reset the iterator 'that' to its end position
 #if BUILDMODE != 0
-inline
+static inline
 #endif 
 void _GenTreeIterToEnd(GenTreeIter* const that) {
 #if BUILDMODE == 0
@@ -156,7 +156,7 @@ void _GenTreeIterToEnd(GenTreeIter* const that) {
 // Return true if it could move to the next position
 // Return false if it's already at the last position
 #if BUILDMODE != 0
-inline
+static inline
 #endif 
 bool _GenTreeIterStep(GenTreeIter* const that) {
 #if BUILDMODE == 0
@@ -182,7 +182,7 @@ bool _GenTreeIterStep(GenTreeIter* const that) {
 // Return true if it could move to the previous position
 // Return false if it's already at the first position
 #if BUILDMODE != 0
-inline
+static inline
 #endif 
 bool _GenTreeIterStepBack(GenTreeIter* const that) {
 #if BUILDMODE == 0
@@ -211,7 +211,7 @@ bool _GenTreeIterStepBack(GenTreeIter* const that) {
 // property of the nodes, 'param' is a hook to allow the user to pass
 // parameters to the function through a user-defined structure
 #if BUILDMODE != 0
-inline
+static inline
 #endif 
 void _GenTreeIterApply(GenTreeIter* const that, 
   void(*fun)(void* const data, void* const param), void* const param) {
@@ -243,7 +243,7 @@ void _GenTreeIterApply(GenTreeIter* const that,
 // its point of view, not the order in the GenTree)
 // Return false else
 #if BUILDMODE != 0
-inline
+static inline
 #endif 
 bool _GenTreeIterIsFirst(const GenTreeIter* const that) {
 #if BUILDMODE == 0
@@ -260,7 +260,7 @@ bool _GenTreeIterIsFirst(const GenTreeIter* const that) {
 // its point of view, not the order in the GenTree)
 // Return false else
 #if BUILDMODE != 0
-inline
+static inline
 #endif 
 bool _GenTreeIterIsLast(const GenTreeIter* const that) {
 #if BUILDMODE == 0
@@ -275,7 +275,7 @@ bool _GenTreeIterIsLast(const GenTreeIter* const that) {
 
 // Change the attached tree of the iterator, and reset it
 #if BUILDMODE != 0
-inline
+static inline
 #endif 
 void _GenTreeIterDepthSetGenTree(GenTreeIterDepth* const that, 
   GenTree* const tree) {
@@ -299,7 +299,7 @@ void _GenTreeIterDepthSetGenTree(GenTreeIterDepth* const that,
   GenTreeIterReset(that);
 }
 #if BUILDMODE != 0
-inline
+static inline
 #endif 
 void _GenTreeIterBreadthSetGenTree(GenTreeIterBreadth* const that, 
   GenTree* tree) {
@@ -323,7 +323,7 @@ void _GenTreeIterBreadthSetGenTree(GenTreeIterBreadth* const that,
   GenTreeIterReset(that);
 }
 #if BUILDMODE != 0
-inline
+static inline
 #endif 
 void _GenTreeIterValueSetGenTree(GenTreeIterValue* const that, 
   GenTree* const tree) {
@@ -349,7 +349,7 @@ void _GenTreeIterValueSetGenTree(GenTreeIterValue* const that,
 
 // Return the user data of the tree currently pointed to by the iterator
 #if BUILDMODE != 0
-inline
+static inline
 #endif 
 void* _GenTreeIterGetData(const GenTreeIter* const that) {
 #if BUILDMODE == 0
@@ -369,7 +369,7 @@ void* _GenTreeIterGetData(const GenTreeIter* const that) {
 
 // Return the tree currently pointed to by the iterator
 #if BUILDMODE != 0
-inline
+static inline
 #endif 
 GenTree* _GenTreeIterGetGenTree(const GenTreeIter* const that) {
 #if BUILDMODE == 0
@@ -389,7 +389,7 @@ GenTree* _GenTreeIterGetGenTree(const GenTreeIter* const that) {
 
 // Return the tree associated to the iterator 'that'
 #if BUILDMODE != 0
-inline
+static inline
 #endif 
 GenTree* _GenTreeIterGenTree(const GenTreeIter* const that) {
 #if BUILDMODE == 0
@@ -404,7 +404,7 @@ GenTree* _GenTreeIterGenTree(const GenTreeIter* const that) {
 
 // Return the sequaence of the iterator 'that'
 #if BUILDMODE != 0
-inline
+static inline
 #endif 
 GSetGenTree* _GenTreeIterSeq(const GenTreeIter* const that) {
 #if BUILDMODE == 0

@@ -58,19 +58,19 @@ void _GenTreeFreeStatic(GenTree* that);
 
 // Get the user data of the GenTree 'that'
 #if BUILDMODE != 0
-inline
+static inline
 #endif
 void* _GenTreeData(const GenTree* const that);
 
 // Set the user data of the GenTree 'that' to 'data'
 #if BUILDMODE != 0
-inline
+static inline
 #endif
 void _GenTreeSetData(GenTree* const that, void* const data);
 
 // Get the set of subtrees of the GenTree 'that'
 #if BUILDMODE != 0
-inline
+static inline
 #endif
 GSetGenTree* _GenTreeSubtrees(const GenTree* const that);
 
@@ -81,27 +81,27 @@ void _GenTreeCut(GenTree* const that);
 // Return true if the GenTree 'that' is a root
 // Return false else
 #if BUILDMODE != 0
-inline
+static inline
 #endif
 bool _GenTreeIsRoot(const GenTree* const that);
 
 // Return true if the GenTree 'that' is a leaf
 // Return false else
 #if BUILDMODE != 0
-inline
+static inline
 #endif
 bool _GenTreeIsLeaf(const GenTree* const that);
 
 // Return true if the GenTree 'that' is the last of its brotherhood
 // Return false else
 #if BUILDMODE != 0
-inline
+static inline
 #endif
 bool _GenTreeIsLastBrother(const GenTree* const that);
 
 // Return the parent of the GenTree 'that'
 #if BUILDMODE != 0
-inline
+static inline
 #endif
 GenTree* _GenTreeParent(const GenTree* const that);
 
@@ -127,66 +127,66 @@ GenTree* _GenTreeSearch(const GenTree* const that,
   const void* const data, GenTreeIter* const iter);
 
 // Wrapping of GSet functions
-inline GenTree* _GenTreeSubtree(const GenTree* const that, const int iSubtree) {
+static inline GenTree* _GenTreeSubtree(const GenTree* const that, const int iSubtree) {
   return GSetGet(_GenTreeSubtrees(that), iSubtree);
 }
-inline GenTree* _GenTreeFirstSubtree(const GenTree* const that) {
+static inline GenTree* _GenTreeFirstSubtree(const GenTree* const that) {
   return GSetHead(_GenTreeSubtrees(that));
 }
-inline GenTree* _GenTreeLastSubtree(const GenTree* const that) {
+static inline GenTree* _GenTreeLastSubtree(const GenTree* const that) {
   return GSetTail(_GenTreeSubtrees(that));
 }
-inline GenTree* _GenTreePopSubtree(GenTree* const that) {
+static inline GenTree* _GenTreePopSubtree(GenTree* const that) {
   return GSetPop(_GenTreeSubtrees(that));
 }
-inline GenTree* _GenTreeDropSubtree(GenTree* const that) {
+static inline GenTree* _GenTreeDropSubtree(GenTree* const that) {
   return GSetDrop(_GenTreeSubtrees(that));
 }
-inline GenTree* _GenTreeRemoveSubtree(GenTree* const that, const int iSubtree) {
+static inline GenTree* _GenTreeRemoveSubtree(GenTree* const that, const int iSubtree) {
   return GSetRemove((GSet*)_GenTreeSubtrees(that), iSubtree);
 }
 
-inline void _GenTreePushSubtree(GenTree* const that, GenTree* const tree) {
+static inline void _GenTreePushSubtree(GenTree* const that, GenTree* const tree) {
   if (!tree) return;
   GSetPush(_GenTreeSubtrees(that), tree);
   tree->_parent = that;
 }
-inline void _GenTreeAddSortSubTree(GenTree* const that, GenTree* const tree, 
+static inline void _GenTreeAddSortSubTree(GenTree* const that, GenTree* const tree, 
   const float sortVal) {
   if (!tree) return;
   GSetAddSort(_GenTreeSubtrees(that), tree, sortVal);
   tree->_parent = that;
 }
-inline void _GenTreeInsertSubtree(GenTree* const that, GenTree* const tree, 
+static inline void _GenTreeInsertSubtree(GenTree* const that, GenTree* const tree, 
   const int pos) {
   if (!tree) return;
   GSetInsert(_GenTreeSubtrees(that), tree, pos);
   tree->_parent = that;
 }
-inline void _GenTreeAppendSubtree(GenTree* const that, GenTree* const tree) {
+static inline void _GenTreeAppendSubtree(GenTree* const that, GenTree* const tree) {
   if (!tree) return;
   GSetAppend(_GenTreeSubtrees(that), tree);
   tree->_parent = that;
 }
 
-inline void _GenTreePushData(GenTree* const that, void* const data) {
+static inline void _GenTreePushData(GenTree* const that, void* const data) {
   GenTree* tree = GenTreeCreateData(data);
   GSetPush(_GenTreeSubtrees(that), tree);
   tree->_parent = that;
 }
-inline void _GenTreeAddSortData(GenTree* const that, void* const data, 
+static inline void _GenTreeAddSortData(GenTree* const that, void* const data, 
   const float sortVal) {
   GenTree* tree = GenTreeCreateData(data);
   GSetAddSort(_GenTreeSubtrees(that), tree, sortVal);
   tree->_parent = that;
 }
-inline void _GenTreeInsertData(GenTree* const that, void* const data, 
+static inline void _GenTreeInsertData(GenTree* const that, void* const data, 
   const int pos) {
   GenTree* tree = GenTreeCreateData(data);
   GSetInsert(_GenTreeSubtrees(that), tree, pos);
   tree->_parent = that;
 }
-inline void _GenTreeAppendData(GenTree* const that, void* const data) {
+static inline void _GenTreeAppendData(GenTree* const that, void* const data) {
   GenTree* tree = GenTreeCreateData(data);
   GSetAppend(_GenTreeSubtrees(that), tree);
   tree->_parent = that;
@@ -255,13 +255,13 @@ void _GenTreeIterFreeStatic(GenTreeIter* const that);
 
 // Reset the iterator 'that' at its start position
 #if BUILDMODE != 0
-inline
+static inline
 #endif 
 void _GenTreeIterReset(GenTreeIter* const that);
 
 // Reset the iterator 'that' at its end position
 #if BUILDMODE != 0
-inline
+static inline
 #endif 
 void _GenTreeIterToEnd(GenTreeIter* const that);
 
@@ -269,7 +269,7 @@ void _GenTreeIterToEnd(GenTreeIter* const that);
 // Return true if it could move to the next position
 // Return false if it's already at the last position
 #if BUILDMODE != 0
-inline
+static inline
 #endif 
 bool _GenTreeIterStep(GenTreeIter* const that);
 
@@ -277,7 +277,7 @@ bool _GenTreeIterStep(GenTreeIter* const that);
 // Return true if it could move to the previous position
 // Return false if it's already at the first position
 #if BUILDMODE != 0
-inline
+static inline
 #endif 
 bool _GenTreeIterStepBack(GenTreeIter* const that);
 
@@ -288,7 +288,7 @@ bool _GenTreeIterStepBack(GenTreeIter* const that);
 // property of the nodes, 'param' is a hook to allow the user to pass
 // parameters to the function through a user-defined structure
 #if BUILDMODE != 0
-inline
+static inline
 #endif 
 void _GenTreeIterApply(GenTreeIter* const that, 
   void(*fun)(void* const data, void* const param), void* const param);
@@ -297,7 +297,7 @@ void _GenTreeIterApply(GenTreeIter* const that,
 // its point of view, not the order in the GenTree)
 // Return false else
 #if BUILDMODE != 0
-inline
+static inline
 #endif 
 bool _GenTreeIterIsFirst(const GenTreeIter* const that);
 
@@ -305,48 +305,48 @@ bool _GenTreeIterIsFirst(const GenTreeIter* const that);
 // its point of view, not the order in the GenTree)
 // Return false else
 #if BUILDMODE != 0
-inline
+static inline
 #endif 
 bool _GenTreeIterIsLast(const GenTreeIter* const that);
 
 // Change the attached tree of the iterator, and reset it
 #if BUILDMODE != 0
-inline
+static inline
 #endif 
 void _GenTreeIterDepthSetGenTree(GenTreeIterDepth* const that, 
   GenTree* const tree);
 #if BUILDMODE != 0
-inline
+static inline
 #endif 
 void _GenTreeIterBreadthSetGenTree(GenTreeIterBreadth* const that, 
   GenTree* const tree);
 #if BUILDMODE != 0
-inline
+static inline
 #endif 
 void _GenTreeIterValueSetGenTree(GenTreeIterValue* const that, 
   GenTree* const tree);
 
 // Return the user data of the tree currently pointed to by the iterator
 #if BUILDMODE != 0
-inline
+static inline
 #endif 
 void* _GenTreeIterGetData(const GenTreeIter* const that);
 
 // Return the tree currently pointed to by the iterator
 #if BUILDMODE != 0
-inline
+static inline
 #endif 
 GenTree* _GenTreeIterGetGenTree(const GenTreeIter* const that);
 
 // Return the tree associated to the iterator 'that'
 #if BUILDMODE != 0
-inline
+static inline
 #endif 
 GenTree* _GenTreeIterGenTree(const GenTreeIter* const that);
 
 // Return the sequence of the iterator
 #if BUILDMODE != 0
-inline
+static inline
 #endif 
 GSetGenTree* _GenTreeIterSeq(const GenTreeIter* const that);
 
@@ -354,68 +354,68 @@ GSetGenTree* _GenTreeIterSeq(const GenTreeIter* const that);
 
 typedef struct GenTreeStr {GenTree _tree;} GenTreeStr;
 #define GenTreeStrCreate() ((GenTreeStr*)GenTreeCreate())
-inline GenTreeStr GenTreeStrCreateStatic(void) 
+static inline GenTreeStr GenTreeStrCreateStatic(void) 
   {GenTreeStr ret = {._tree=GenTreeCreateStatic()}; return ret;}
 #define GenTreeStrCreateData(Data) ((GenTreeStr*)GenTreeCreateData(Data))
-inline char* _GenTreeStrData(const GenTreeStr* const that) {
+static inline char* _GenTreeStrData(const GenTreeStr* const that) {
   return (char*)_GenTreeData((const GenTree* const)that);
 }
-inline void _GenTreeStrSetData(GenTreeStr* const that, char* const data) {
+static inline void _GenTreeStrSetData(GenTreeStr* const that, char* const data) {
   _GenTreeSetData((GenTree* const)that, (void* const)data);
 }
-inline GSetGenTreeStr* _GenTreeStrSubtrees(const GenTreeStr* const that) {
+static inline GSetGenTreeStr* _GenTreeStrSubtrees(const GenTreeStr* const that) {
   return (GSetGenTreeStr*)_GenTreeSubtrees((const GenTree* const)that);
 }
-inline GenTreeStr* _GenTreeStrParent(const GenTreeStr* const that) {
+static inline GenTreeStr* _GenTreeStrParent(const GenTreeStr* const that) {
   return (GenTreeStr*)_GenTreeParent((const GenTree* const)that);
 }
-inline void _GenTreeStrPushData(GenTreeStr* const that, char* const data) {
+static inline void _GenTreeStrPushData(GenTreeStr* const that, char* const data) {
   _GenTreePushData((GenTree* const)that, (void* const)data);
 }
-inline void _GenTreeStrAddSortData(GenTreeStr* const that, char* const data, 
+static inline void _GenTreeStrAddSortData(GenTreeStr* const that, char* const data, 
   const float sortVal) {
   _GenTreeAddSortData((GenTree* const)that, (void* const)data, sortVal);
 }
-inline void _GenTreeStrInsertData(GenTreeStr* const that, char* const data, 
+static inline void _GenTreeStrInsertData(GenTreeStr* const that, char* const data, 
   const int pos) {
   _GenTreeInsertData((GenTree* const)that, (void* const)data, pos);
 }
-inline void _GenTreeStrAppendData(GenTreeStr* const that, char* const data) {
+static inline void _GenTreeStrAppendData(GenTreeStr* const that, char* const data) {
   _GenTreeAppendData((GenTree* const)that, (void* const)data);
 }
-inline GenTreeStr* _GenTreeStrSubtree(const GenTreeStr* const that, 
+static inline GenTreeStr* _GenTreeStrSubtree(const GenTreeStr* const that, 
   const int iSubtree) {
   return (GenTreeStr*)_GenTreeSubtree((const GenTree* const)that, iSubtree);
 }
-inline GenTreeStr* _GenTreeStrFirstSubtree(const GenTreeStr* const that) {
+static inline GenTreeStr* _GenTreeStrFirstSubtree(const GenTreeStr* const that) {
   return (GenTreeStr*)_GenTreeFirstSubtree((const GenTree* const)that);
 }
-inline GenTreeStr* _GenTreeStrLastSubtree(const GenTreeStr* const that) {
+static inline GenTreeStr* _GenTreeStrLastSubtree(const GenTreeStr* const that) {
   return (GenTreeStr*)_GenTreeLastSubtree((const GenTree* const)that);
 }
-inline GenTreeStr* _GenTreeStrPopSubtree(GenTreeStr* const that) {
+static inline GenTreeStr* _GenTreeStrPopSubtree(GenTreeStr* const that) {
   return (GenTreeStr*)_GenTreePopSubtree((GenTree* const)that);
 }
-inline GenTreeStr* _GenTreeStrDropSubtree(GenTreeStr* const that) {
+static inline GenTreeStr* _GenTreeStrDropSubtree(GenTreeStr* const that) {
   return (GenTreeStr*)_GenTreeDropSubtree((GenTree* const)that);
 }
-inline GenTreeStr* _GenTreeStrRemoveSubtree(GenTreeStr* const that, 
+static inline GenTreeStr* _GenTreeStrRemoveSubtree(GenTreeStr* const that, 
   const int iSubtree) {
   return (GenTreeStr*)_GenTreeRemoveSubtree((GenTree* const)that, iSubtree);
 }
-inline void _GenTreeStrPushSubtree(GenTreeStr* const that, 
+static inline void _GenTreeStrPushSubtree(GenTreeStr* const that, 
   GenTreeStr* const tree) {
   _GenTreePushSubtree((GenTree* const)that, (GenTree* const)tree);
 }
-inline void _GenTreeStrAddSortSubTree(GenTreeStr* const that, 
+static inline void _GenTreeStrAddSortSubTree(GenTreeStr* const that, 
   GenTreeStr* const tree, const float sortVal) {
   _GenTreeAddSortSubTree((GenTree* const)that, (GenTree* const)tree, sortVal);
 }
-inline void _GenTreeStrInsertSubtree(GenTreeStr* const that, 
+static inline void _GenTreeStrInsertSubtree(GenTreeStr* const that, 
   GenTreeStr* const tree, const int pos) {
   _GenTreeInsertSubtree((GenTree* const)that, (GenTree* const)tree, pos);
 }
-inline void _GenTreeStrAppendSubtree(GenTreeStr* const that, 
+static inline void _GenTreeStrAppendSubtree(GenTreeStr* const that, 
   GenTreeStr* const tree) {
   _GenTreeAppendSubtree((GenTree* const)that, (GenTree* const)tree);
 }
@@ -752,7 +752,7 @@ inline void _GenTreeStrAppendSubtree(GenTreeStr* const that,
   GenTreeIterValue*: GenTreeIterValueUpdate, \
   default: PBErrInvalidPolymorphism) (Iter)
 
-// ================ Inliner ====================
+// ================ static inliner ====================
 
 #if BUILDMODE != 0
 #include "gtree-inline.c"
